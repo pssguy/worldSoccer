@@ -1,11 +1,3 @@
-# fluidPage(
-# 
-#   selectInput("team","Choose",teamOptions,selected="Liverpool"),
-#  # numericInput("season","Choose Season", value=2014, min=1880,max=2014,step=1),
-#   ggvisOutput("plot"),
-#  # textOutput("seasonVal"),
-#   DT::dataTableOutput('standings')
-#   )
 
 dashboardPage(
   dashboardHeader(title = "English League"),
@@ -13,8 +5,8 @@ dashboardPage(
     selectInput("team","Choose",teamOptions,selected="Liverpool"),
     
     sidebarMenu(
-      menuItem("Standings", tabName = "standings")
-     # menuItem("Raw data", tabName = "rawdata")
+      menuItem("Standings", tabName = "standings"),
+      menuItem("Result Matrix", tabName = "matrix")
     )
   ),
   dashboardBody(
@@ -33,17 +25,30 @@ dashboardPage(
                   
                 ),
                 box(
-                  width = 6, status = "info",
+                  width = 6, status = "info",solidHeader = TRUE,
                   title = "League table",
                   DT::dataTableOutput('standings', width = "90%")
                 )
-              )
-      )#,
-#       tabItem("rawdata",
+              ),
+              fluidRow(
+               box(
+                 width = 6, status = "info", solidHeader = TRUE,
+               title = "Season Results",
+               DT::dataTableOutput("results")
+    
+  )#,
+#   box(
+#     width = 6, status = "info",
+#     title = "League table",
+#     DT::dataTableOutput('standings', width = "90%")
+#   )
+)
+      ),
+      tabItem("matrix"
 #               numericInput("maxrows", "Rows to show", 25),
 #               verbatimTextOutput("rawtable"),
 #               downloadButton("downloadCsv", "Download as CSV")
-#       )
+      )
     )
   )
 )

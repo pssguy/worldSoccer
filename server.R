@@ -16,9 +16,6 @@ function(input, output, session) {
       theSeason })
     
     session$output$standings <- DT::renderDataTable({
-      
-      
-      
       theDivision <-  all %>% 
         filter(Season==theSeason&team==input$team) %>% 
         .$division
@@ -29,6 +26,16 @@ function(input, output, session) {
        # select(team,Pl=GP,W,D,L,Pts,GF=gf,GA=ga,GD=gd) %>%
         select(team,Pl=GP,W,D,L,GD=gd,Pts) %>% 
         
+        DT::datatable(options= list(scrollY = 500,paging = FALSE, searching = FALSE,info=FALSE))
+      
+    })
+    
+    session$output$results <- DT::renderDataTable({
+      df %>% 
+        filter(Season==theSeason&(home==input$team|visitor==input$team)) %>% 
+        mutate(result=paste(hgoal,vgoal,sep=" - ")) %>% 
+        select(Date,home,result,visitor) %>% 
+        arrange(Date) %>% 
         DT::datatable(options= list(paging = FALSE, searching = FALSE,info=FALSE))
       
     })

@@ -6,6 +6,7 @@ library(shinydashboard)
 library(DT)
 
 df <- tbl_df(engsoccerdata2)
+df$gameDate <- as.Date(df$Date) # takes a while
 
 ## make tables - shpuld look at make table function
 
