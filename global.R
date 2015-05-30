@@ -4,6 +4,7 @@ library(dplyr)
 library(shiny)
 library(shinydashboard)
 library(DT)
+library(ggplot2)
 
 df <- tbl_df(engsoccerdata2)
 df$gameDate <- as.Date(df$Date) # takes a while

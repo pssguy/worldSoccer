@@ -2,21 +2,24 @@
 dashboardPage(
   dashboardHeader(title = "English League"),
   dashboardSidebar(
-    selectInput("team","Choose",teamOptions,selected="Liverpool"),
+    #selectInput("team","Choose",teamOptions,selected="Liverpool"),
     
     sidebarMenu(
       menuItem("Standings", tabName = "standings"),
+              # selectInput("team","Choose",teamOptions,selected="Liverpool")),
       menuItem("Result Matrix", tabName = "matrix")
-    )
+              
+               )
+    
   ),
   dashboardBody(
     tabItems(
       tabItem("standings",
-#               fluidRow(
+              fluidRow(
 #                 valueBoxOutput("rate"),
 #                 valueBoxOutput("count"),
-#                 valueBoxOutput("users")
-#               ),
+                selectInput("team","Choose",teamOptions,selected="Liverpool")
+              ),
               fluidRow(
                 box(
                   width = 6, status = "info", solidHeader = TRUE,
@@ -44,10 +47,21 @@ dashboardPage(
 #   )
 )
       ),
-      tabItem("matrix"
-#               numericInput("maxrows", "Rows to show", 25),
-#               verbatimTextOutput("rawtable"),
+      tabItem("matrix",
+#                sliderInput("year_matrix", "Choose Season", min=1870,max=2014,value=2014),
+#                selectInput("division","Choose division",c("1","2")) # this needs to be a uioutput
 #               downloadButton("downloadCsv", "Download as CSV")
+          fluidRow(
+            column(width=5,offset=1,sliderInput("year_matrix", "Choose Season (start year)", min=1870,max=2014,value=2014,sep="")),
+            column(width=6,selectInput("division","Choose division",c("1","2")))
+          ),
+          box(
+           width = 8, status = "info", solidHeader = TRUE,
+           title = "Match matrix",
+           plotOutput("plot_matrix")
+  
+)
+
       )
     )
   )
