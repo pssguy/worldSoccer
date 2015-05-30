@@ -140,4 +140,31 @@ function(input, output, session) {
     
   })
   
+  
+  # head to head 
+  output$headToHead <- DT::renderDataTable({
+    
+    print(input$team_MU)
+    
+    home <- df %>% 
+      filter(home==input$team_MU) %>% 
+      group_by(visitor) %>% 
+      summarise(P = n(), GF = sum(hgoal), GA = sum(vgoal), GD=sum(goaldif),
+                W=sum(result=="H"), D=sum(result=="D"), L=sum(result=="A") ) %>% 
+      rename(opponent=visitor)
+    away <- df %>% 
+      filter(visitor==input$team_MU) %>% 
+      group_by(home) %>% 
+      summarise(P = n(), GF = sum(vgoal), GA = sum(hgoal), GD=GF-GA,
+                W=sum(result=="A"), D=sum(result=="D"), L=sum(result=="H") )%>% 
+      rename(opponent=home)
+    
+    total <- rbind(home,away) %>% 
+      group_by(opponent) %>% 
+      summarize(P=sum(P),GF=sum(GF),GA=sum(GA),GD=GF-GA,W=sum(W),D=sum(D),L=sum(L)) %>% 
+      DT::datatable(rownames=FALSE,options= list(pageLength=10,paging = TRUE, searching = TRUE,info=FALSE))
+    
+    
+    
+  })
 }

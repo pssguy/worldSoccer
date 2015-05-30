@@ -7,7 +7,8 @@ dashboardPage(
     sidebarMenu(
       menuItem("Standings", tabName = "standings"),
               # selectInput("team","Choose",teamOptions,selected="Liverpool")),
-      menuItem("Result Matrix", tabName = "matrix")
+      menuItem("Result Matrix", tabName = "matrix"),
+      menuItem("Head To Head", tabName = "matchup")
               
                )
     
@@ -62,10 +63,25 @@ dashboardPage(
   
 )
 
-      )
+      ),
+tabItem("matchup",
+        fluidRow(
+          #                 valueBoxOutput("rate"),
+          #                 valueBoxOutput("count"),
+          selectInput("team_MU","Choose",teamOptions,selected="Arsenal")
+        ),
+        fluidRow(
+          box(
+            width = 6, status = "info", solidHeader = TRUE,
+            title = "Head To Head - click row for details",
+            DT::dataTableOutput("headToHead"))
+            
+          )
+        )
+)
     )
   )
-)
+
 
 ## original https://github.com/rstudio/shiny-examples/blob/master/087-crandash/ui.R
 
