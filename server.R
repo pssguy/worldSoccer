@@ -142,8 +142,8 @@ function(input, output, session) {
   
   
   # head to head 
-  output$headToHead <- DT::renderDataTable({
-    
+  
+    headData <- reactive({
     print(input$team_MU)
     
     home <- df %>% 
@@ -159,12 +159,66 @@ function(input, output, session) {
                 W=sum(result=="A"), D=sum(result=="D"), L=sum(result=="H") )%>% 
       rename(opponent=home)
     
-    total <- rbind(home,away) %>% 
+   
+    
+    total <- rbind(home,away) 
+    
+    summary <- total %>% 
       group_by(opponent) %>% 
-      summarize(P=sum(P),GF=sum(GF),GA=sum(GA),GD=GF-GA,W=sum(W),D=sum(D),L=sum(L)) %>% 
-      DT::datatable(rownames=FALSE,options= list(pageLength=10,paging = TRUE, searching = TRUE,info=FALSE))
+      summarize(P=sum(P),GF=sum(GF),GA=sum(GA),GD=GF-GA,W=sum(W),D=sum(D),L=sum(L)) 
+    
+#     print(row.names(total))
+#     row.names(total) <- total$opponent
+#     print(row.names(total))
+    
+    info=list(total=total,summary=summary)
+    return(info)
+    
+    })
+    
+
+    
+    output$headToHead <- DT::renderDataTable({
+      headData()$summary %>%  
+        DT::datatable(rownames=TRUE,selection='single',options= list(pageLength=10,
+                                                       paging = TRUE, searching = TRUE,info=FALSE))
+    })
+  ## check that row is being selected (client)
+  
+#   output$check <- renderText({
+#     print("enter check") 
+#     s = input$headToHead_rows_selected
+#     print(s) # even if change row,names it is still index
+#     print(headData()$total$opponent[s])
+#   })
+  
+  output$HtoHGames <- DT::renderDataTable({
+     print(input$headToHead_rows_selected)
+    if(is.null(input$headToHead_rows_selected)) return()
+    s = input$headToHead_rows_selected
+    print(s) # even if change row,names it is still index
+    theOpponent <-headData()$summary$opponent[s]
+    
+    df %>% 
+      filter((home==input$team_MU&visitor==theOpponent)|(home==theOpponent&visitor==input$team_MU)) %>% 
+      select(Date,home,FT,visitor) %>% 
+      arrange(desc(Date)) %>% 
+      DT::datatable(rownames=TRUE,selection='single',options= list(pageLength=10,
+                                                                   paging = TRUE, searching = FALSE,info=FALSE))
+    
     
     
     
   })
+  
+  ## try server side
+#   output$check <- renderPrint({
+#     print("enter check") # does enter - actually before table is clicked
+#     s = input$headToHead_rows_selected
+#     if (length(s)) {
+#       cat('These rows were selected:\n\n')
+#       cat(s, sep = '\n')
+#     }
+#   })
+  
 }
