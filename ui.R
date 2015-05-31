@@ -74,8 +74,12 @@ tabItem("matchup",
           box(
             width = 6, status = "info", solidHeader = TRUE,
             title = "Head To Head - click row for details",
-            DT::dataTableOutput("headToHead"))
-            
+            DT::dataTableOutput("headToHead")),
+          box(
+            width = 6, status = "info", solidHeader = TRUE,
+            title = "All Games",
+            #textOutput("check"))
+            DT::dataTableOutput("HtoHGames"))
           )
         )
 )
