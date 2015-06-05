@@ -3,14 +3,12 @@
 
 function(input, output, session) {
   
+  # function to get Season data from graph and apply to table
   getSeason = function(data,location,session){
     
     if(is.null(data)) return(NULL)
     
     theSeason <- data$Season
-#     updateDateInput(session, "season", label = NULL, value = theSeason, min = NULL,
-#                     max = NULL)
-    
     session$output$seasonVal <- renderText({
       
       theSeason })
@@ -23,7 +21,7 @@ function(input, output, session) {
       all %>% 
         filter(Season==theSeason&division==theDivision) %>% 
         arrange(Position) %>% 
-       # select(team,Pl=GP,W,D,L,Pts,GF=gf,GA=ga,GD=gd) %>%
+       
         select(team,Pl=GP,W,D,L,GD=gd,Pts) %>% 
         
         DT::datatable(options= list(scrollY = 500,paging = FALSE, searching = FALSE,info=FALSE))
@@ -183,20 +181,13 @@ function(input, output, session) {
         DT::datatable(rownames=TRUE,selection='single',options= list(pageLength=10,
                                                        paging = TRUE, searching = TRUE,info=FALSE))
     })
-  ## check that row is being selected (client)
-  
-#   output$check <- renderText({
-#     print("enter check") 
-#     s = input$headToHead_rows_selected
-#     print(s) # even if change row,names it is still index
-#     print(headData()$total$opponent[s])
-#   })
+
   
   output$HtoHGames <- DT::renderDataTable({
-     print(input$headToHead_rows_selected)
+     
     if(is.null(input$headToHead_rows_selected)) return()
     s = input$headToHead_rows_selected
-    print(s) # even if change row,names it is still index
+   
     theOpponent <-headData()$summary$opponent[s]
     
     df %>% 
@@ -211,14 +202,5 @@ function(input, output, session) {
     
   })
   
-  ## try server side
-#   output$check <- renderPrint({
-#     print("enter check") # does enter - actually before table is clicked
-#     s = input$headToHead_rows_selected
-#     if (length(s)) {
-#       cat('These rows were selected:\n\n')
-#       cat(s, sep = '\n')
-#     }
-#   })
-  
+
 }
