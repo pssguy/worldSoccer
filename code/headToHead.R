@@ -1,16 +1,16 @@
 # head to head 
 
 headData <- reactive({
-  print(input$team_MU)
+  print(input$team)
   
   home <- df %>% 
-    filter(home==input$team_MU) %>% 
+    filter(home==input$team) %>% 
     group_by(visitor) %>% 
     summarise(P = n(), GF = sum(hgoal), GA = sum(vgoal), GD=sum(goaldif),
               W=sum(result=="H"), D=sum(result=="D"), L=sum(result=="A") ) %>% 
     rename(opponent=visitor)
   away <- df %>% 
-    filter(visitor==input$team_MU) %>% 
+    filter(visitor==input$team) %>% 
     group_by(home) %>% 
     summarise(P = n(), GF = sum(vgoal), GA = sum(hgoal), GD=GF-GA,
               W=sum(result=="A"), D=sum(result=="D"), L=sum(result=="H") )%>% 
@@ -50,7 +50,7 @@ output$HtoHGames <- DT::renderDataTable({
   theOpponent <-headData()$summary$opponent[s]
   
   df %>% 
-    filter((home==input$team_MU&visitor==theOpponent)|(home==theOpponent&visitor==input$team_MU)) %>% 
+    filter((home==input$team&visitor==theOpponent)|(home==theOpponent&visitor==input$team)) %>% 
     select(Date,home,FT,visitor) %>% 
     arrange(desc(Date)) %>% 
     DT::datatable(rownames=TRUE,selection='single',options= list(pageLength=10,

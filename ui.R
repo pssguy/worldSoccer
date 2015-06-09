@@ -93,11 +93,11 @@ dashboardPage(
 
       ),
 tabItem("matchup",
-        fluidRow(
-          #                 valueBoxOutput("rate"),
-          #                 valueBoxOutput("count"),
-          selectInput("team_MU","Choose",teamOptions,selected="Arsenal")
-        ),
+#         fluidRow(
+#           #                 valueBoxOutput("rate"),
+#           #                 valueBoxOutput("count"),
+#           selectInput("team_MU","Choose",teamOptions,selected="Arsenal")
+#         ),
         fluidRow(
           box(
             width = 6, status = "success", solidHeader = TRUE,
