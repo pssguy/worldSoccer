@@ -1,14 +1,17 @@
 
-dashboardPage(
-  dashboardHeader(title = "English League"),
+dashboardPage(skin="yellow",
+  dashboardHeader(title = "World Soccer"),
   dashboardSidebar(
+    h4("   English League"),
     selectInput("team","Choose Team",teamOptions,selected="Liverpool"),
     
     sidebarMenu(
       menuItem("Standings", tabName = "standings"),
               # selectInput("team","Choose",teamOptions,selected="Liverpool")),
-      menuItem("Result Matrix", tabName = "matrix"),
+      
       menuItem("Head To Head", tabName = "matchup"),
+      menuItem("Result Matrix", tabName = "matrix"),
+      menuItem("Info", tabName = "info", icon = icon("info")),
       menuItem("", icon = icon("twitter-square"),
                href = "https://twitter.com/pssGuy"),
       menuItem("", icon = icon("envelope"),
@@ -55,7 +58,7 @@ dashboardPage(
                   width = 12, status = "success", solidHeader = TRUE,
                   title = "Season Results",
                   collapsible=TRUE,
-                  #collapsible=TRUE,collapsed = TRUE,
+                  #collapsible=TRUE,collapsed = TRUE, bug?  
                   DT::dataTableOutput("results")
                   
                 )
@@ -101,17 +104,25 @@ tabItem("matchup",
         fluidRow(
           box(
             width = 6, status = "success", solidHeader = TRUE,
-            title = "Head To Head - click row for details",
+            title = "Head To Head - click row for details against opponent",
+            collapsible = TRUE,
             DT::dataTableOutput("headToHead")),
           box(
             width = 6, status = "success", solidHeader = TRUE,
             title = "All Games",
             #textOutput("check"))
             DT::dataTableOutput("HtoHGames"))
-          )
+          ),
+fluidRow(
+  box(width=8,
+    status = "success", solidHeader = TRUE,
+    title = "Summary of Seasons Difference in Overall Position",
+    ggvisOutput("HtoHPos"))
         )
-)
-    )
-  )
+),
+tabItem("info", includeMarkdown("info.md"))
+    )#tabitems
+  ) #body
+) #page
 
 

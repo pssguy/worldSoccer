@@ -87,7 +87,7 @@ observe({
   test %>% 
     mutate(diff=opponent-team) %>% 
     filter(!is.na(diff)) %>% 
-    ggvis(~diff,fill:='green') %>% 
+    ggvis(~diff,fill:='#f39c12') %>% 
     add_axis("x", title="Difference in Overall Standing") %>% 
     add_axis("y", title= "Seasons") %>% 
     bind_shiny("HtoHPos")
