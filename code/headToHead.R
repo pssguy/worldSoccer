@@ -42,9 +42,11 @@ output$headToHead <- DT::renderDataTable({
 })
 
 
-output$HtoHGames <- DT::renderDataTable({
+output$HtoHGames <- DT::renderDataTable({ 
+  print("enter HtoHGames")
   
   if(is.null(input$headToHead_rows_selected)) return()
+  print("enter HtoHGames running")
   s = input$headToHead_rows_selected
   
   theOpponent <-headData()$summary$opponent[s]
@@ -57,6 +59,39 @@ output$HtoHGames <- DT::renderDataTable({
                                                                  paging = TRUE, searching = FALSE,info=FALSE))
   
   
+})
+
+#vis  <- reactive({
+observe({
+  print("enter HtoHPos")
+  if(is.null(input$headToHead_rows_selected)) return()
+  s = input$headToHead_rows_selected
+  print("enter HtoHPos running")
+  teamB <-headData()$summary$opponent[s]
+  teamA <- input$team
   
+  test <-all %>% 
+    select(Season,team,Overall) %>% 
+    filter(team==teamA|team==teamB) %>% 
+    spread(team,Overall) 
+  
+  
+  if(teamA<teamB) {
+    
+    colnames(test) <- c("Season","team","opponent")
+    
+  } else {
+    colnames(test) <- c("Season","opponent","team")  
+  }
+  
+  test %>% 
+    mutate(diff=opponent-team) %>% 
+    filter(!is.na(diff)) %>% 
+    ggvis(~diff,fill:='green') %>% 
+    add_axis("x", title="Difference in Overall Standing") %>% 
+    add_axis("y", title= "Seasons") %>% 
+    bind_shiny("HtoHPos")
   
 })
+
+#vis %>% bind_shiny("HtoHpos")

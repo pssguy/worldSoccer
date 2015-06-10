@@ -45,7 +45,7 @@ observe ({
     group_by(division) %>% 
     filter(team==input$team) %>% 
     ggvis(~Season,~Overall) %>% 
-    layer_points(fill=~division) %>% 
+    layer_points(fill=~tier) %>% 
     scale_numeric("y", reverse=TRUE) %>% 
     add_axis("y",title="Overall League Position") %>% 
     add_axis("x",title="",format="####") %>% 

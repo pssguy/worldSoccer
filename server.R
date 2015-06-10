@@ -32,8 +32,8 @@ function(input, output, session) {
       df %>% 
         filter(Season==theSeason&(home==input$team|visitor==input$team)) %>% 
         mutate(result=paste(hgoal,vgoal,sep=" - ")) %>% 
-        select(Date,home,result,visitor) %>% 
-        arrange(Date) %>% 
+        select(date=gameDate,home,result,visitor) %>% 
+        arrange(date) %>% 
         DT::datatable(options= list(paging = FALSE, searching = FALSE,info=FALSE))
       
     })
