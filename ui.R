@@ -12,6 +12,12 @@ dashboardPage(skin="yellow",
       menuItem("Head To Head", tabName = "matchup"),
       menuItem("Result Matrix", tabName = "matrix"),
       menuItem("Info", tabName = "info", icon = icon("info")),
+      menuItem("Other Dashboards",
+                menuSubItem("Fortune500",href = "https://mytinyshinys.shinyapps.io/fortune500"),
+               menuSubItem("WikiGuardian",href = "https://mytinyshinys.shinyapps.io/wikiGuardian"),
+               #menuSubItem("World Soccer",href = "https://mytinyshinys.shinyapps.io/worldSoccer")
+               
+      ),
       menuItem("", icon = icon("twitter-square"),
                href = "https://twitter.com/pssGuy"),
       menuItem("", icon = icon("envelope"),

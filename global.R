@@ -6,6 +6,7 @@ library(shinydashboard)
 library(DT)
 library(ggplot2)
 library(tidyr)
+library(markdown)
 
 df <- tbl_df(engsoccerdata2)
 df$gameDate <- as.Date(df$Date) # takes a while
