@@ -40,15 +40,29 @@ getSeason = function(data,location,session){
 # position by year graph
 observe ({
   
-  all %>% 
+selection<-  all %>% 
+    
+    group_by(division) %>% 
+    filter(team==input$team)
+  
+selection  <- cbind(selection, id = seq_len(nrow(selection)))  
+
+  all_values <- function(x) {
+    if(is.null(x)) return(NULL)
+    row <- selection[selection$id == x$id,c("Season","tier","Position")]
+    paste0(names(row),": ", format(row), collapse = "<br />")
+  }
+  
+  selection %>% 
     
     group_by(division) %>% 
     filter(team==input$team) %>% 
-    ggvis(~Season,~Overall) %>% 
+    ggvis(~Season,~Overall,key := ~id) %>% 
     layer_points(fill=~tier) %>% 
     scale_numeric("y", reverse=TRUE) %>% 
     add_axis("y",title="Overall League Position") %>% 
     add_axis("x",title="",format="####") %>% 
+    add_tooltip(all_values,"click") %>% 
     handle_click(getSeason) %>% 
     set_options(height = 480, width = 480) %>% 
     bind_shiny("plot")

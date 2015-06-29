@@ -47,7 +47,7 @@ output$HtoHGames <- DT::renderDataTable({
   
   if(is.null(input$headToHead_rows_selected)) return()
   print("enter HtoHGames running")
-  s = input$headToHead_rows_selected
+  s = as.integer(input$headToHead_rows_selected)
   
   theOpponent <-headData()$summary$opponent[s]
   
@@ -65,7 +65,7 @@ output$HtoHGames <- DT::renderDataTable({
 observe({
   print("enter HtoHPos")
   if(is.null(input$headToHead_rows_selected)) return()
-  s = input$headToHead_rows_selected
+  s = as.integer(input$headToHead_rows_selected)
   print("enter HtoHPos running")
   teamB <-headData()$summary$opponent[s]
   teamA <- input$team

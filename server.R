@@ -3,6 +3,25 @@
 
 function(input, output, session) {
   
+  
+  ## set up input menu in sidebar
+  output$a <- renderUI({
+    print("enter renderUI")
+    if (input$sbMenu=="matrix") {
+      print("matrix")
+      inputPanel(
+      sliderInput("year_matrix", "Choose Season (start year)", min=1870,max=2014,value=2014,sep=""),
+      selectInput("division","Choose division",c("1","2")) 
+      )
+    } else {
+      print(" notmatrix")
+      selectInput("team","Choose Team",teamOptions,selected="Liverpool")
+    }
+    
+  })
+  
+  
+  
   # function to get Season data from graph and apply to table
   getSeason = function(data,location,session){
     
@@ -44,7 +63,9 @@ function(input, output, session) {
   
   # position by year graph
   observe ({
-    
+    if (is.null(input$team)) return()
+    print("enter observe")
+    print(input$team)
     all %>% 
       
       group_by(division) %>% 
