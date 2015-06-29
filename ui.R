@@ -1,11 +1,16 @@
 
 dashboardPage(skin="yellow",
+             
   dashboardHeader(title = "World Soccer"),
   dashboardSidebar(
-    h4("   English League"),
-    selectInput("team","Choose Team",teamOptions,selected="Liverpool"),
     
-    sidebarMenu(
+    h4("   English League"),
+    hr(),
+    uiOutput("a"),
+    hr(),
+   # selectInput("team","Choose Team",teamOptions,selected="Liverpool"),
+    
+    sidebarMenu(id = "sbMenu",
       menuItem("Standings", tabName = "standings"),
               # selectInput("team","Choose",teamOptions,selected="Liverpool")),
       
@@ -13,10 +18,11 @@ dashboardPage(skin="yellow",
       menuItem("Result Matrix", tabName = "matrix"),
       menuItem("Info", tabName = "info", icon = icon("info")),
       menuItem("Other Dashboards",
-                menuSubItem("Fortune500",href = "https://mytinyshinys.shinyapps.io/fortune500"),
-               menuSubItem("WikiGuardian",href = "https://mytinyshinys.shinyapps.io/wikiGuardian")
-               #menuSubItem("World Soccer",href = "https://mytinyshinys.shinyapps.io/worldSoccer")
-               
+               menuSubItem("Bundesliga",href = "https://mytinyshinys.shinyapps.io/bundesliga"),
+              # menuSubItem("English",href = "https://mytinyshinys.shinyapps.io/worldSoccer"),
+               menuSubItem("Eredivise",href = "https://mytinyshinys.shinyapps.io/eredivise"),
+               menuSubItem("La Liga",href = "https://mytinyshinys.shinyapps.io/laLiga"),
+               menuSubItem("Serie A",href = "https://mytinyshinys.shinyapps.io/seriea")        
       ),
       menuItem("", icon = icon("twitter-square"),
                href = "https://twitter.com/pssGuy"),
@@ -26,26 +32,16 @@ dashboardPage(skin="yellow",
   #    menuItem("mts Sites", 
   #             menuSubItem("Sports",href = "https://mytinyshinys.shinyapps.io/sports/"))
   
-    ) 
+ #   ) 
  
+  )
+ ),
+  dashboardBody(tags$head(
+    tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
   ),
-  dashboardBody(
     tabItems(
       tabItem("standings",
-#               fluidRow(
-#                 box(
-#                   width = 4,
-#                   title = "Introduction", status = "info", solidHeader = TRUE,
-#                   helpText(h4("some text mmmmmm
-#                                mmmmmmmmm mmmmmmm mmmmmmmm mmmmmmm"))
-#                 ),
-#                 box(
-#                   width = 2,offset=1,
-#                   title = "Select Team", status = "warning", solidHeader = TRUE
-#                  # selectInput("team","",teamOptions,selected="Liverpool")
-#                 )
-#                 
-#               ),
+
               fluidRow(
                 column(width=6,
                 box(
@@ -73,20 +69,7 @@ dashboardPage(skin="yellow",
       )
 ),
       tabItem("matrix",
-#                sliderInput("year_matrix", "Choose Season", min=1870,max=2014,value=2014),
-#                selectInput("division","Choose division",c("1","2")) # this needs to be a uioutput
-#               downloadButton("downloadCsv", "Download as CSV")
-          fluidRow(
-#             column(width=5,offset=1,sliderInput("year_matrix", "Choose Season (start year)", min=1870,max=2014,value=2014,sep="")),
-#             column(width=6,selectInput("division","Choose division",c("1","2")))
-            column(width=10,offset=1,
-                   box(width=12,
-                   status="warning",solidHeader = TRUE,title="Select",
-                   sliderInput("year_matrix", "Choose Season (start year)", min=1870,max=2014,value=2014,sep=""),
-                   selectInput("division","Choose division",c("1","2"))
-            )
-            )
-          ),
+
           fluidRow(
             column(width=10,offset=1,
                    box(width=12,
@@ -102,11 +85,7 @@ dashboardPage(skin="yellow",
 
       ),
 tabItem("matchup",
-#         fluidRow(
-#           #                 valueBoxOutput("rate"),
-#           #                 valueBoxOutput("count"),
-#           selectInput("team_MU","Choose",teamOptions,selected="Arsenal")
-#         ),
+
         fluidRow(
           box(
             width = 6, status = "success", solidHeader = TRUE,

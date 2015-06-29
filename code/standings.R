@@ -39,7 +39,7 @@ getSeason = function(data,location,session){
 
 # position by year graph
 observe ({
-  
+  if (is.null(input$team)) return()
 selection<-  all %>% 
     
     group_by(division) %>% 
