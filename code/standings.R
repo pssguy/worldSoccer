@@ -24,6 +24,10 @@ getSeason = function(data,location,session){
   })
   
   session$output$results <- DT::renderDataTable({
+    
+    print(glimpse(df))
+    print(str(df))
+    
     df %>% 
       filter(Season==theSeason&(home==input$team|visitor==input$team)) %>% 
       mutate(result=paste(hgoal,vgoal,sep=" - ")) %>% 
@@ -39,12 +43,19 @@ getSeason = function(data,location,session){
 
 # position by year graph
 observe ({
+  print("enter inputteam")
+  print(input$team)
+  print("shows inputteam")
   if (is.null(input$team)) return()
 selection<-  all %>% 
     
-    group_by(division) %>% 
-    filter(team==input$team)
+   # group_by(tier) %>% # was division
+    filter(team==input$team) 
+## try arranging by year
+    
   
+
+
 selection  <- cbind(selection, id = seq_len(nrow(selection)))  
 
   all_values <- function(x) {
@@ -52,11 +63,17 @@ selection  <- cbind(selection, id = seq_len(nrow(selection)))
     row <- selection[selection$id == x$id,c("Season","tier","Position")]
     paste0(names(row),": ", format(row), collapse = "<br />")
   }
-  
-  selection %>% 
+ 
+  print(glimpse(selection))
+   
+ test <- selection %>% 
     
-    group_by(division) %>% 
-    filter(team==input$team) %>% 
+  #  group_by(tier) %>% # was division with above seems to obviate disappearing points
+    filter(team==input$team)
+ 
+ print(View(test))
+ 
+ test %>% 
     ggvis(~Season,~Overall,key := ~id) %>% 
     layer_points(fill=~tier) %>% 
     scale_numeric("y", reverse=TRUE) %>% 
@@ -67,5 +84,5 @@ selection  <- cbind(selection, id = seq_len(nrow(selection)))
     set_options(height = 480, width = 480) %>% 
     bind_shiny("plot")
 })
-
+## issue with plot showing and then immediately all but lowest divisions disappear
 

@@ -7,6 +7,7 @@ library(DT)
 library(ggplot2)
 library(tidyr)
 library(markdown)
+library(readr)
 
 df <- tbl_df(engsoccerdata2)
 df$gameDate <- as.Date(df$Date) # takes a while
@@ -77,8 +78,15 @@ all$tier <- as.character(all$tier)
 all[all$division=="3a",]$division <- "3N"
 all[all$division=="3b",]$division <- "3S"
 
-print(glimpse(all))
+#print(glimpse(all))
 
 teamOptions <- sort(unique(all$team))
 
 seasonOptions <- c(1880:2015)
+
+## PFA 
+pfa <- read_csv("pfa.csv")
+
+teamChoice <- sort(unique(pfa$team))
+playerChoice <- sort(unique(pfa$player))
+countryChoice <- sort(unique(pfa$country))

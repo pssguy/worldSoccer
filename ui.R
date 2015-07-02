@@ -1,29 +1,43 @@
 
 dashboardPage(skin="yellow",
              
-  dashboardHeader(title = "World Soccer"),
+  dashboardHeader(title = "English League"),
   dashboardSidebar(
-    
-    h4("   English League"),
-    hr(),
+    includeCSS("custom.css"),
+#     h4("   English League"),
+#     hr(),
     uiOutput("a"),
-    hr(),
+#    hr(),
    # selectInput("team","Choose Team",teamOptions,selected="Liverpool"),
     
     sidebarMenu(id = "sbMenu",
+#       menuItem("English",
+#                menuSubItem("Standings",tabName="standingsE")),         
+#                 
+                
       menuItem("Standings", tabName = "standings"),
-              # selectInput("team","Choose",teamOptions,selected="Liverpool")),
+              
       
       menuItem("Head To Head", tabName = "matchup"),
+      menuItem("PFA Awards", tabName="pfaPlayers"),
       menuItem("Result Matrix", tabName = "matrix"),
       menuItem("Info", tabName = "info", icon = icon("info")),
-      menuItem("Other Dashboards",
+      menuItem("Other Leagues",
                menuSubItem("Bundesliga",href = "https://mytinyshinys.shinyapps.io/bundesliga"),
               # menuSubItem("English",href = "https://mytinyshinys.shinyapps.io/worldSoccer"),
                menuSubItem("Eredivise",href = "https://mytinyshinys.shinyapps.io/eredivise"),
                menuSubItem("La Liga",href = "https://mytinyshinys.shinyapps.io/laLiga"),
                menuSubItem("Serie A",href = "https://mytinyshinys.shinyapps.io/seriea")        
       ),
+menuItem("Other Dashboards",
+      menuSubItem("MainlyMaps",href = "https://mytinyshinys.shinyapps.io/mainlyMaps"), 
+      menuSubItem("MLB",href = "https://mytinyshinys.shinyapps.io/mlbCharts"),
+      menuSubItem("Climate",href = "https://mytinyshinys.shinyapps.io/climate"),
+      menuSubItem("WikiGuardian",href = "https://mytinyshinys.shinyapps.io/wikiGuardian")
+),
+      
+
+
       menuItem("", icon = icon("twitter-square"),
                href = "https://twitter.com/pssGuy"),
       menuItem("", icon = icon("envelope"),
@@ -105,6 +119,58 @@ fluidRow(
     ggvisOutput("HtoHPos"))
         )
 ),
+
+tabItem(
+  "pfaPlayers",
+  fluidRow(box(
+    width = 12,
+    div(style = "display:inline-block;padding-right: 20px; border-color: #00a65a;width: 200px;",h5("Since 1973 the PFA have chosen their best team for each division.
+                                                                                                   Make Selections to analyse the results")),
+    div(style = "display:inline-block",selectInput(
+      "pfaPlayer","Player",c("All",playerChoice), width = 180
+    )),
+    div(style = "display:inline-block;",selectInput(
+      "pfaTeam","Team",c("All",teamChoice), width = 180
+    )),
+    div(style = "display:inline-block",selectInput(
+      "pfaCountry","Country",c("All",countryChoice), width = 180
+    )),
+    div(style = "display:inline-block",selectInput("pfaTier","Tier",c("All",1,2,3,4), width = 80)),
+    div(style = "display:inline-block",selectInput(
+      "pfaPosition","Position",c("All","GK","DF","MF","FW"), width = 80
+    )))),
+ 
+  
+  fluidRow(column(
+    width = 6,
+    box(
+      width = 12, status = "success", solidHeader = TRUE,
+      title = "Click on Player for Detailed Data",
+      DT::dataTableOutput("pfaTable")
+      
+    )
+  ),
+  column(
+    width = 6,
+    box(
+      width = 12,status = "success", solidHeader = TRUE,
+      title = "Click on Season for Full Team",
+      collapsible = TRUE, collapsed = FALSE,
+      DT::dataTableOutput("pfaPlayerTable")
+    ),
+    box(
+      width = 12,
+      
+      collapsible = TRUE, collapsed = FALSE,
+      DT::dataTableOutput("pfaSeasonTier")
+    )
+  ))
+  
+  
+  ),
+
+
+
 tabItem("info", includeMarkdown("info.md"))
     )#tabitems
   ) #body
