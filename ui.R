@@ -15,13 +15,18 @@ dashboardPage(skin="yellow",
 #                menuSubItem("Standings",tabName="standingsE")),         
 #                 
                 
-      menuItem("Standings", tabName = "standings"),
+      #menuItem("Standings", tabName = "standings"),
               
       
-      menuItem("Head To Head", tabName = "matchup"),
+      #menuItem("Head To Head", tabName = "matchup"),
       menuItem("PFA Awards", tabName="pfaPlayers"),
-      menuItem("Result Matrix", tabName = "matrix"),
-      menuItem("Info", tabName = "info", icon = icon("info")),
+      menuItem("Team History",
+               menuSubItem("Head To Head", tabName = "matchup"),
+               menuSubItem("Result Matrix", tabName = "matrix"),
+               menuSubItem("Standings", tabName = "standings")
+      ),
+     # menuItem("Result Matrix", tabName = "matrix"),
+     # menuItem("Info", tabName = "info", icon = icon("info")),
       menuItem("Other Leagues",
                menuSubItem("Bundesliga",href = "https://mytinyshinys.shinyapps.io/bundesliga"),
               # menuSubItem("English",href = "https://mytinyshinys.shinyapps.io/worldSoccer"),
