@@ -67,15 +67,14 @@ output$pfaTable <- DT::renderDataTable({
 
 playerData <- reactive({ 
   
-  print(input$pfaTable_rows_selected)
   if(is.null(input$pfaTable_rows_selected)) return()
   
   s = as.integer(input$pfaTable_rows_selected)
   
-  print(s)
+  
   
   thePlayer <- pfaData()$res[s,]$player
-  print(thePlayer)
+ 
   
   res <-   pfa %>% 
     filter(player==thePlayer) %>% 
@@ -90,14 +89,13 @@ playerData <- reactive({
 
 
 output$pfaPlayerTable <- DT::renderDataTable({ 
-  print("enter pfaTable")
-  print(pfaData())
+ 
   if(is.null(pfaData())) return()
   
   playerData()$res %>% 
     DT::datatable(rownames=TRUE,selection='single',options= list(paging = FALSE, searching = FALSE,info=FALSE,
                                                                  columnDefs = list(list(targets = c(0), visible = FALSE))))
-  #DT::datatable(rownames=TRUE,selection='single',options= list(paging = FALSE, searching = FALSE,info=FALSE))
+  
   
   
 })
@@ -105,12 +103,11 @@ output$pfaPlayerTable <- DT::renderDataTable({
 
 output$pfaSeasonTier <- DT::renderDataTable({ 
   
-  print(input$pfaPlayerTable_rows_selected)
+ 
   if(is.null(input$pfaPlayerTable_rows_selected)) return()
   
   s = as.integer(input$pfaPlayerTable_rows_selected)
-  print("printin pfaPlayerTable s")
-  print(s)
+ 
   
   theSeason <- playerData()$res[s,]$season
   theTier <- playerData()$res[s,]$tier

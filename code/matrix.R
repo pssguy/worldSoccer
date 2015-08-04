@@ -1,8 +1,10 @@
 # result matrix by year
 
 output$plot_matrix <- renderPlot({
-  if(is.null(input$year_matrix)) return()
-  df <- df  %>% filter(Season==input$year_matrix&division==input$division) %>% 
+  
+  if(is.null(input$yearMatrix)) return()
+  if(is.null(input$division)) return()
+  df <- df  %>% filter(Season==input$yearMatrix&division==input$division) %>% 
     
     select(home,visitor,FT,hgoal,vgoal) %>% 
     mutate(GD=hgoal-vgoal,
@@ -16,7 +18,7 @@ output$plot_matrix <- renderPlot({
     ) #rbind two copies of the orignal df, simply reversing home/away team for each match
   # win was worth 2 points until 1981
   
-  if (input$year_matrix>=1981) {
+  if (input$yearMatrix>=1981) {
     temp1<-
       temp %>%
       mutate(GD = GF-GA) %>%

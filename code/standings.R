@@ -25,8 +25,7 @@ getSeason = function(data,location,session){
   
   session$output$results <- DT::renderDataTable({
     
-    print(glimpse(df))
-    print(str(df))
+ 
     
     df %>% 
       filter(Season==theSeason&(home==input$team|visitor==input$team)) %>% 
@@ -43,18 +42,13 @@ getSeason = function(data,location,session){
 
 # position by year graph
 observe ({
-  print("enter inputteam")
-  print(input$team)
-  print("shows inputteam")
   if (is.null(input$team)) return()
+
+  
 selection<-  all %>% 
     
    # group_by(tier) %>% # was division
     filter(team==input$team) 
-## try arranging by year
-    
-  
-
 
 selection  <- cbind(selection, id = seq_len(nrow(selection)))  
 
@@ -64,7 +58,7 @@ selection  <- cbind(selection, id = seq_len(nrow(selection)))
     paste0(names(row),": ", format(row), collapse = "<br />")
   }
  
-  print(glimpse(selection))
+ 
    
  test <- selection %>% 
     
@@ -84,5 +78,5 @@ selection  <- cbind(selection, id = seq_len(nrow(selection)))
     set_options(height = 480, width = 480) %>% 
     bind_shiny("plot")
 })
-## issue with plot showing and then immediately all but lowest divisions disappear
+## issue with plot showing and then immediately all but lowest divisions disappear? solved
 

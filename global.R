@@ -74,15 +74,23 @@ all<- rbind(old,new) %>%
 # set to character to enbale points to be discrete colors
 all$tier <- as.character(all$tier)
 
-# set to more meaningful Sounth and North
+# set to more meaningful  South and North
 all[all$division=="3a",]$division <- "3N"
 all[all$division=="3b",]$division <- "3S"
 
-#print(glimpse(all))
+
 
 teamOptions <- sort(unique(all$team))
 
 seasonOptions <- c(1880:2015)
+
+# get div available each year
+seasonDiv <- df %>% 
+  select(Season,division) %>% 
+  unique() %>% 
+  arrange(desc(Season))
+
+print(seasonDiv)
 
 ## PFA 
 pfa <- read_csv("pfa.csv")

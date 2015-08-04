@@ -6,22 +6,14 @@ dashboardPage(
   dashboardHeader(title = "English League"),
   dashboardSidebar(
     includeCSS("custom.css"),
-    #     h4("   English League"),
-    #     hr(),
+   
     uiOutput("a"),
-    #    hr(),
-    # selectInput("team","Choose Team",teamOptions,selected="Liverpool"),
+
+    uiOutput("b"),
     
     sidebarMenu(
       id = "sbMenu",
-      #       menuItem("English",
-      #                menuSubItem("Standings",tabName="standingsE")),
-      #
-      
-      #menuItem("Standings", tabName = "standings"),
-      
-      
-      #menuItem("Head To Head", tabName = "matchup"),
+
       menuItem("PFA Awards", tabName = "pfaPlayers"),
       menuItem(
         "Team History",
@@ -29,8 +21,7 @@ dashboardPage(
         menuSubItem("Result Matrix", tabName = "matrix"),
         menuSubItem("Standings", tabName = "standings", selected=TRUE)
       ),
-      # menuItem("Result Matrix", tabName = "matrix"),
-      # menuItem("Info", tabName = "info", icon = icon("info")),
+     
       menuItem(
         "Other Leagues",
         menuSubItem("Bundesliga",href = "https://mytinyshinys.shinyapps.io/bundesliga"),
@@ -56,10 +47,7 @@ dashboardPage(
       menuItem("", icon = icon("envelope"),
                href = "mailto:agcur@rogers.com")
       
-      #    menuItem("mts Sites",
-      #             menuSubItem("Sports",href = "https://mytinyshinys.shinyapps.io/sports/"))
-      
-      #   )
+
       
     )
   ),

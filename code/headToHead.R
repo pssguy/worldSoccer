@@ -1,7 +1,7 @@
 # head to head 
 
 headData <- reactive({
-  print(input$team)
+  if(is.null(input$team)) return()
   
   home <- df %>% 
     filter(home==input$team) %>% 
@@ -23,10 +23,7 @@ headData <- reactive({
   summary <- total %>% 
     group_by(opponent) %>% 
     summarize(P=sum(P),GF=sum(GF),GA=sum(GA),GD=GF-GA,W=sum(W),D=sum(D),L=sum(L)) 
-  
-  #     print(row.names(total))
-  #     row.names(total) <- total$opponent
-  #     print(row.names(total))
+
   
   info=list(total=total,summary=summary)
   return(info)
@@ -43,10 +40,10 @@ output$headToHead <- DT::renderDataTable({
 
 
 output$HtoHGames <- DT::renderDataTable({ 
-  print("enter HtoHGames")
+ 
   
   if(is.null(input$headToHead_rows_selected)) return()
-  print("enter HtoHGames running")
+
   s = as.integer(input$headToHead_rows_selected)
   
   theOpponent <-headData()$summary$opponent[s]
@@ -61,12 +58,13 @@ output$HtoHGames <- DT::renderDataTable({
   
 })
 
-#vis  <- reactive({
+
 observe({
-  print("enter HtoHPos")
   if(is.null(input$headToHead_rows_selected)) return()
+ 
+ 
   s = as.integer(input$headToHead_rows_selected)
-  print("enter HtoHPos running")
+  
   teamB <-headData()$summary$opponent[s]
   teamA <- input$team
   
@@ -94,4 +92,3 @@ observe({
   
 })
 
-#vis %>% bind_shiny("HtoHpos")
