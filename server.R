@@ -1,6 +1,4 @@
 
-
-
 function(input, output, session) {
   
   
@@ -10,12 +8,12 @@ function(input, output, session) {
    
     if (input$sbMenu=="matrix") {
      inputPanel(
-      sliderInput("yearMatrix", "Choose Season (start year)", min=1870,max=2014,value=2014,sep="")
+      sliderInput("yearMatrix", "Choose Season (start year)", min=1870,max=2015,value=2015,sep="")
      )
     } else if (input$sbMenu=="pfaPlayers") {
     
       inputPanel(sliderInput(
-        "pfaYear","Year(s)",min = 1973,max = 2014,value = c(1992,2014),sep = "", width =
+        "pfaYear","Year(s)",min = 1973,max = 2015,value = c(1992,2015),sep = "", width =
           200)
       )
     

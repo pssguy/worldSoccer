@@ -65,7 +65,7 @@ selection  <- cbind(selection, id = seq_len(nrow(selection)))
   #  group_by(tier) %>% # was division with above seems to obviate disappearing points
     filter(team==input$team)
  
- print(View(test))
+# print(View(test))
  
  test %>% 
     ggvis(~Season,~Overall,key := ~id) %>% 

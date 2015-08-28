@@ -9,8 +9,11 @@ library(tidyr)
 library(markdown)
 library(readr)
 
-df <- tbl_df(engsoccerdata2)
-df$gameDate <- as.Date(df$Date) # takes a while
+#df <- tbl_df(engsoccerdata2)
+#df$gameDate <- as.Date(df$Date) # takes a while
+
+df <- readRDS("updated.rds")
+
 
 ## make tables - shpuld look at make table function
 
@@ -90,7 +93,7 @@ seasonDiv <- df %>%
   unique() %>% 
   arrange(desc(Season))
 
-print(seasonDiv)
+#print(seasonDiv)
 
 ## PFA 
 pfa <- read_csv("pfa.csv")
