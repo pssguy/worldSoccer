@@ -1,4 +1,5 @@
-## weekly updates
+## weekly updates 
+## based on https://gist.github.com/jalapic/54110279217f71ae4348
 
 library(XML)
 library(dplyr)
