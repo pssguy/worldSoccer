@@ -3,7 +3,7 @@
 dashboardPage(
   skin = "yellow",
   
-  dashboardHeader(title = "English League"),
+  dashboardHeader(title = "English Leagues"),
   dashboardSidebar(
     includeCSS("custom.css"),
    
@@ -14,7 +14,7 @@ dashboardPage(
     sidebarMenu(
       id = "sbMenu",
 
-      menuItem("PFA Awards", tabName = "pfaPlayers"),
+     
       menuItem(
         "Team History",
         menuSubItem("Head To Head", tabName = "matchup"),
@@ -30,6 +30,7 @@ dashboardPage(
         menuSubItem("La Liga",href = "https://mytinyshinys.shinyapps.io/laLiga"),
         menuSubItem("Serie A",href = "https://mytinyshinys.shinyapps.io/seriea")
       ),
+      menuItem("PFA Awards", tabName = "pfaPlayers"),
       menuItem(
         "Other Dashboards",
         menuSubItem("Climate",href = "https://mytinyshinys.shinyapps.io/climate"),

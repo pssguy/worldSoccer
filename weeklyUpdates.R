@@ -1,9 +1,12 @@
 ## weekly updates 
 ## based on https://gist.github.com/jalapic/54110279217f71ae4348
+## There is a weeklyupdate backups which has more working data
+## Need to revisit every year
 
 library(XML)
 library(dplyr)
 library(tidyr)
+library(stringr)
 
 #scraping function
 getresults2 <- function(z1){
@@ -285,4 +288,313 @@ updated.df$gameDate <- as.Date(updated.df$Date)
 
 
 saveRDS(updated.df,"updated.rds")
+
+
+
+### look at other leagues eg bundesliga
+
+
+library(engsoccerdata)
+library(ggvis)
+library(dplyr)
+library(shiny)
+library(shinydashboard)
+library(DT)
+library(ggplot2)
+library(tidyr)
+library(markdown)
+library(readr)
+library(XML)
+library(stringr)
+
+
+
+## weekly update
+
+
+#Germany
+pages <- 1:34 # bundesliga has 34 rounds
+myurls <- paste("http://www.worldfootball.net/schedule/bundesliga-2015-2016-spieltag/",
+                pages, "/", sep="")
+
+results <- vector("list",length(myurls))
+
+for(i in 1:length(myurls)){
+  print(i)
+  x <- readHTMLTable(myurls[i])
+  results[[i]] <- getresults2(x[[2]])
+}
+
+df.1 <- do.call("rbind", results)
+
+
+## during season, need to remove those yet to be played
+
+df.1 <- df.1[df.1$FT!="---",] #306 none removed in 14/15 which makes sense
+
+
+
+
+#add variables but not division
+df.1<-
+  df.1 %>% 
+  separate(FT, c("hgoal", "vgoal"), remove=F) %>%
+  mutate(Season=2015,
+         
+         tier=1
+ 
+  )
+
+#df.1 <- df.1 %>% select(Date, Season, home,visitor,FT,hgoal,vgoal,tier,totgoal,goaldif,result)
+df.1 <- df.1 %>% select(Date, Season, home,visitor,FT,hgoal,vgoal,tier)
+
+#make sure variables are numeric
+df.1$hgoal <- as.integer(as.character(df.1$hgoal))
+df.1$vgoal <- as.integer(as.character(df.1$vgoal))
+df.1$time <- NULL
+df.1$Season <- as.integer(df.1$Season)
+df.1$home <-as.character(df.1$home)
+df.1$visitor <-as.character(df.1$visitor)
+df.1$tier <- as.integer(df.1$tier)
+
+day <- str_sub(df.1$date,1,2)
+month <- str_sub(df.1$date,4,5)
+year <- str_sub(df.1$date,7,10)
+
+df.1$date <- paste(year,month,day,sep="-")
+
+
+
+
+bundesliga <- readRDS("bundesliga_14.rds")
+updated.df <- bind_rows(bundesliga,df.1) 
+
+
+saveRDS(updated.df,"bundesliga.rds")
+
+
+
+
+# Italy weekly
+
+pages <- 1:38 
+myurls <- paste("http://www.worldfootball.net/schedule/ita-serie-a-2015-2016-spieltag/",
+                pages, "/", sep="")
+
+results <- vector("list",length(myurls))
+
+for(i in 1:length(myurls)){
+  print(i)
+  x <- readHTMLTable(myurls[i])
+  results[[i]] <- getresults2(x[[2]])
+}
+
+df.1 <- do.call("rbind", results)
+
+
+## during season, need to remove those yet to be played
+
+df.1 <- df.1[df.1$FT!="---",] #306 none removed in 14/15 which makes sense
+
+
+
+
+## Tidy data to be in engsoccerdata format str(df.1)
+
+
+
+#add variables but not division
+df.1<-
+  df.1 %>% 
+  separate(FT, c("hgoal", "vgoal"), remove=F) %>%
+  mutate(Season=2015,
+         
+         tier=1
+         
+  )
+
+
+df.1 <- df.1 %>% select(Date, Season, home,visitor,FT,hgoal,vgoal,tier)
+
+#make sure variables are numeric
+df.1$hgoal <- as.integer(as.character(df.1$hgoal))
+df.1$vgoal <- as.integer(as.character(df.1$vgoal))
+df.1$time <- NULL
+df.1$Season <- as.integer(df.1$Season)
+df.1$home <-as.character(df.1$home)
+df.1$visitor <-as.character(df.1$visitor)
+df.1$tier <- as.integer(df.1$tier)
+
+day <- str_sub(df.1$date,1,2)
+month <- str_sub(df.1$date,4,5)
+year <- str_sub(df.1$date,7,10)
+
+df.1$date <- paste(year,month,day,sep="-")
+
+# head(df.1)
+# str(df.1)
+# 
+# glimpse(df_13)
+# glimpse(df.1)
+
+calcio <- readRDS("calcio_14.rds")
+
+updated.df <- bind_rows(calcio,df.1) 
+#updated.df$gameDate <- as.Date(updated.df$Date)
+
+saveRDS(updated.df,"calcio.rds")
+
+calcio <- readRDS("calcio.rds")
+glimpse(calcio)
+
+
+
+# Spain weekly
+
+pages <- 1:38 
+myurls <- paste("http://www.worldfootball.net/schedule/esp-primera-division-2015-2016-spieltag/",
+                pages, "/", sep="")
+
+results <- vector("list",length(myurls))
+
+for(i in 1:length(myurls)){
+  print(i)
+  x <- readHTMLTable(myurls[i])
+  results[[i]] <- getresults2(x[[2]])
+}
+
+df.1 <- do.call("rbind", results)
+
+
+## during season, need to remove those yet to be played
+
+df.1 <- df.1[df.1$FT!="---",] #306 none removed in 14/15 which makes sense
+
+
+
+
+## Tidy data to be in engsoccerdata format str(df.1)
+
+
+
+#add variables but not division
+df.1<-
+  df.1 %>% 
+  separate(FT, c("hgoal", "vgoal"), remove=F) %>%
+  mutate(Season=2015,
+         
+         tier=1
+         
+  )
+
+
+df.1 <- df.1 %>% select(Date, Season, home,visitor,FT,hgoal,vgoal,tier)
+
+#make sure variables are numeric
+df.1$hgoal <- as.integer(as.character(df.1$hgoal))
+df.1$vgoal <- as.integer(as.character(df.1$vgoal))
+df.1$time <- NULL
+df.1$Season <- as.integer(df.1$Season)
+df.1$home <-as.character(df.1$home)
+df.1$visitor <-as.character(df.1$visitor)
+df.1$tier <- as.integer(df.1$tier)
+
+day <- str_sub(df.1$date,1,2)
+month <- str_sub(df.1$date,4,5)
+year <- str_sub(df.1$date,7,10)
+
+df.1$date <- paste(year,month,day,sep="-")
+
+# head(df.1)
+# str(df.1)
+# 
+# glimpse(df_13)
+# glimpse(df.1)
+
+laliga <- readRDS("laliga_14.rds")
+
+updated.df <- bind_rows(laliga,df.1) 
+#updated.df$gameDate <- as.Date(updated.df$Date)
+
+saveRDS(updated.df,"laliga.rds")
+
+laliga <- readRDS("laliga.rds")
+glimpse(laliga)
+
+
+
+
+# Holland weekly
+
+pages <- 1:34 
+myurls <- paste("http://www.worldfootball.net/schedule/ned-eredivisie-2015-2016-spieltag/",
+                pages, "/", sep="")
+
+results <- vector("list",length(myurls))
+
+for(i in 1:length(myurls)){
+  print(i)
+  x <- readHTMLTable(myurls[i])
+  results[[i]] <- getresults2(x[[2]])
+}
+
+df.1 <- do.call("rbind", results)
+
+
+## during season, need to remove those yet to be played
+
+df.1 <- df.1[df.1$FT!="---",] #306 none removed in 14/15 which makes sense
+
+
+
+
+## Tidy data to be in engsoccerdata format str(df.1)
+
+
+
+#add variables but not division
+df.1<-
+  df.1 %>% 
+  separate(FT, c("hgoal", "vgoal"), remove=F) %>%
+  mutate(Season=2015,
+         
+         tier=1
+         
+  )
+
+
+df.1 <- df.1 %>% select(Date, Season, home,visitor,FT,hgoal,vgoal,tier)
+
+#make sure variables are numeric
+df.1$hgoal <- as.integer(as.character(df.1$hgoal))
+df.1$vgoal <- as.integer(as.character(df.1$vgoal))
+df.1$time <- NULL
+df.1$Season <- as.integer(df.1$Season)
+df.1$home <-as.character(df.1$home)
+df.1$visitor <-as.character(df.1$visitor)
+df.1$tier <- as.integer(df.1$tier)
+
+day <- str_sub(df.1$date,1,2)
+month <- str_sub(df.1$date,4,5)
+year <- str_sub(df.1$date,7,10)
+
+df.1$date <- paste(year,month,day,sep="-")
+
+# head(df.1)
+# str(df.1)
+# 
+# glimpse(df_13)
+# glimpse(df.1)
+
+eredivise <- readRDS("eredivise_14.rds")
+
+updated.df <- bind_rows(eredivise,df.1) 
+#updated.df$gameDate <- as.Date(updated.df$Date)
+
+saveRDS(updated.df,"eredivise.rds")
+
+eredivise <- readRDS("eredivise.rds")
+glimpse(eredivise)
+
+
 
