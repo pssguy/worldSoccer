@@ -183,10 +183,23 @@ dashboardPage(
     
     tabItem("deloitte",
             box(
-              width = 8,status = "success", solidHeader = TRUE,
+              width = 8,offset=2,status = "success", solidHeader = TRUE,
               title = "Data Summary",
+              collapsible = TRUE, collapsed = TRUE,
+            DT::dataTableOutput("deloitteData")),
+            
+            box(
+              radioButtons("delCount",label=NULL,choices=c("Top 10","Top 20","Top 30"), inline=T),
+              width = 12,status = "success", solidHeader = TRUE,
+              title = "Number of Top Ranked Clubs by Country",
               collapsible = TRUE, collapsed = FALSE,
-            DT::dataTableOutput("deloitteData"))
+              fluidRow(
+                column(width=7,ggvisOutput("delByCountry")),
+                column(width=3,offset=1,DT::dataTableOutput("delTeamCount"))
+              )
+              
+            
+            )
             ),
     
     
