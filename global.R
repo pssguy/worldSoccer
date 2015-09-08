@@ -101,3 +101,8 @@ pfa <- read_csv("pfa.csv")
 teamChoice <- sort(unique(pfa$team))
 playerChoice <- sort(unique(pfa$player))
 countryChoice <- sort(unique(pfa$country))
+
+
+## Deloitte
+
+allYears <- read_csv("bigClubsDeloitte.csv")

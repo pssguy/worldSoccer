@@ -57,5 +57,6 @@ function(input, output, session) {
   source("code/matrix.R", local=TRUE)
   source("code/headToHead.R", local=TRUE)
   source("code/pfaPlayers.R", local=TRUE)
+    source("code/deloitte.R", local=TRUE)
 
 }

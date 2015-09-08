@@ -31,6 +31,7 @@ dashboardPage(
         menuSubItem("Serie A",href = "https://mytinyshinys.shinyapps.io/seriea")
       ),
       menuItem("PFA Awards", tabName = "pfaPlayers"),
+      menuItem("Deloitte Rankings", tabName = "deloitte", selected =T),
       menuItem(
         "Other Dashboards",
         menuSubItem("Climate",href = "https://mytinyshinys.shinyapps.io/climate"),
@@ -178,6 +179,15 @@ dashboardPage(
         )
       )
     )),
+    
+    
+    tabItem("deloitte",
+            box(
+              width = 8,status = "success", solidHeader = TRUE,
+              title = "Data Summary",
+              collapsible = TRUE, collapsed = FALSE,
+            DT::dataTableOutput("deloitteData"))
+            ),
     
     
     
