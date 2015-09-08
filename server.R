@@ -17,6 +17,9 @@ function(input, output, session) {
           200)
       )
     
+    } else if (input$sbMenu=="deloitte") {
+      helpText("ipsum lorem etc")
+      
     } else {
       
       inputPanel(selectInput("team","Choose Team",teamOptions,selected="Liverpool"))

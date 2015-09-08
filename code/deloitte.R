@@ -18,8 +18,7 @@ output$deloitteData <- DT::renderDataTable({
 
 observe({
   
-  print("enter observe")
-  
+ 
   if(input$delCount=="Top 10") {
 temp <-  allYears %>% 
     ungroup() %>% 
@@ -69,4 +68,32 @@ df <-    allYears %>%
     DT::datatable(rownames=F,class='compact stripe hover row-border',
                   options = list(searching= FALSE, info=FALSE, paging=TRUE))
   
+})
+
+
+observe({
+  
+  if (input$delCategory=="Rank") {
+  allYears %>% 
+    filter(Club %in% topTen) %>% 
+    ggvis(~Year,~Rank) %>% 
+    group_by(Club) %>% 
+    layer_lines() %>% 
+    layer_points(fill=~Club) %>% 
+    add_axis("x", format='d', title="Season Commencing") %>% 
+    scale_numeric("y", reverse=T) %>% 
+    add_legend("fill",values=topTen, title="") %>% 
+    bind_shiny("delTopTen")
+  } else if (input$delCategory=="Revenue") {
+    allYears %>% 
+      filter(Club %in% topTen) %>% 
+      ggvis(~Year,~Revenue) %>% 
+      group_by(Club) %>% 
+      layer_lines() %>% 
+      layer_points(fill=~Club) %>%  
+      add_axis("x", format='d', title="Season Commencing") %>% 
+      add_axis("y", format='d', title="Revenue (mill. Euro)") %>% 
+      add_legend("fill",values=topTen, title="") %>% 
+      bind_shiny("delTopTen")
+  }
 })

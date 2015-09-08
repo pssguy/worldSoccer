@@ -19,7 +19,7 @@ dashboardPage(
         "Team History",
         menuSubItem("Head To Head", tabName = "matchup"),
         menuSubItem("Result Matrix", tabName = "matrix"),
-        menuSubItem("Standings", tabName = "standings", selected=TRUE)
+        menuSubItem("Standings", tabName = "standings")
       ),
      
       menuItem(
@@ -192,12 +192,18 @@ dashboardPage(
               radioButtons("delCount",label=NULL,choices=c("Top 10","Top 20","Top 30"), inline=T),
               width = 12,status = "success", solidHeader = TRUE,
               title = "Number of Top Ranked Clubs by Country",
-              collapsible = TRUE, collapsed = FALSE,
+              collapsible = TRUE, collapsed = TRUE,
               fluidRow(
                 column(width=7,ggvisOutput("delByCountry")),
                 column(width=3,offset=1,DT::dataTableOutput("delTeamCount"))
-              )
+              )),
               
+              box(
+                radioButtons("delCategory",label=NULL,choices=c("Rank","Revenue","Index (2004=100)"), inline=T),
+                width = 8,offset=2,status = "success", solidHeader = TRUE,
+                title = "Top Ten Clubs - 2013/14 ",
+                collapsible = TRUE, collapsed = FALSE,
+                ggvisOutput("delTopTen")
             
             )
             ),
