@@ -18,7 +18,7 @@ function(input, output, session) {
       )
     
     } else if (input$sbMenu=="deloitte") {
-      helpText("ipsum lorem etc")
+      helpText("The Deloitte Football Money League is a ranking of football clubs by revenue generated from football operations. It is produced annually by the accountancy firm Deloitte and released in early February of each year, describing the season most recently finished")
       
     } else {
       

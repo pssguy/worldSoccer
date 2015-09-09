@@ -95,5 +95,24 @@ observe({
       add_axis("y", format='d', title="Revenue (mill. Euro)") %>% 
       add_legend("fill",values=topTen, title="") %>% 
       bind_shiny("delTopTen")
+  } else {
+    index <-  allYears %>% 
+      filter(Club %in% topTen&Year==2011) %>% 
+      mutate(baseRev=Revenue) %>% 
+      select(Club,baseRev)
+    
+    allYears %>% 
+      filter(Club %in% topTen) %>% 
+      left_join(index) %>% 
+      mutate(index=round(100*Revenue/baseRev)) %>% 
+      ggvis(~Year,~index) %>% 
+      group_by(Club) %>% 
+      layer_lines() %>% 
+      layer_points(fill=~Club) %>% 
+      add_axis("x", format='d', title="Season Commencing") %>% 
+      add_axis("y", format='d', title="Revenue Index (2004=100") %>% 
+      scale_numeric("y") %>% 
+      add_legend("fill",values=topTen, title="") %>% 
+      bind_shiny("delTopTen")
   }
 })

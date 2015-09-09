@@ -199,7 +199,7 @@ dashboardPage(
               )),
               
               box(
-                radioButtons("delCategory",label=NULL,choices=c("Rank","Revenue","Index (2004=100)"), inline=T),
+                radioButtons("delCategory",label=NULL,choices=c("Rank","Revenue","Index (2011=100)"), inline=T),
                 width = 8,offset=2,status = "success", solidHeader = TRUE,
                 title = "Top Ten Clubs - 2013/14 ",
                 collapsible = TRUE, collapsed = FALSE,
