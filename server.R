@@ -16,9 +16,13 @@ function(input, output, session) {
         "pfaYear","Year(s)",min = 1973,max = 2015,value = c(1992,2015),sep = "", width =
           200)
       )
-    
+      
     } else if (input$sbMenu=="deloitte") {
-      helpText("The Deloitte Football Money League is a ranking of football clubs by revenue generated from football operations. It is produced annually by the accountancy firm Deloitte and released in early February of each year, describing the season most recently finished")
+      helpText("The ", a('Deloitte Football Money League', href='http://www2.deloitte.com/content/dam/Deloitte/uk/Documents/sports-business-group/deloitte-football-money-league-2015.PDF')
+                ,"is a ranking of football clubs by revenue
+               generated from football operations. It is produced annually by the accountancy
+               firm Deloitte and released in early February of each year,
+               describing the season most recently finished")
       
     } else {
       

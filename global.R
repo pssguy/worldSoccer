@@ -106,3 +106,9 @@ countryChoice <- sort(unique(pfa$country))
 ## Deloitte
 
 allYears <- read_csv("bigClubsDeloitte.csv")
+
+## Update annually
+topTen <-allYears %>% 
+  filter(Year==2013) %>% 
+  head(.,10) %>% 
+  .$Club

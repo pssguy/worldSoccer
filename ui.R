@@ -182,11 +182,7 @@ dashboardPage(
     
     
     tabItem("deloitte",
-            box(
-              width = 8,offset=2,status = "success", solidHeader = TRUE,
-              title = "Data Summary",
-              collapsible = TRUE, collapsed = TRUE,
-            DT::dataTableOutput("deloitteData")),
+           
             
             box(
               radioButtons("delCount",label=NULL,choices=c("Top 10","Top 20","Top 30"), inline=T),
@@ -205,7 +201,12 @@ dashboardPage(
                 collapsible = TRUE, collapsed = FALSE,
                 ggvisOutput("delTopTen")
             
-            )
+            ),
+            box(
+              width = 8,offset=2,status = "success", solidHeader = TRUE,
+              title = "Data Summary",
+              collapsible = TRUE, collapsed = TRUE,
+              DT::dataTableOutput("deloitteData"))
             ),
     
     
