@@ -10,6 +10,15 @@ function(input, output, session) {
      inputPanel(
       sliderInput("yearMatrix", "Choose Season (start year)", min=1870,max=2015,value=2015,sep="")
      )
+    } else if (input$sbMenu=="sequences") {
+      inputPanel(
+        selectInput("seq_Team","Choose Team",teamOptions,selected="Liverpool"),
+        sliderInput("seq_Run", "Choose Sequence Length", min=1,max=100,value=5,sep=""),
+        radioButtons("seq_venue",label=NULL,c("All","Home","Away"),inline=TRUE),
+        radioButtons("seq_category",label=NULL,c("Win","No Win","Loss","No Loss"),inline=TRUE),
+        actionButton("seq_Button","Get Chart")
+      )
+      
     } else if (input$sbMenu=="pfaPlayers") {
     
       inputPanel(sliderInput(
@@ -60,6 +69,7 @@ function(input, output, session) {
   
 ## link to detailed code by menuItem
 
+    source("code/teamSequences.R", local=TRUE)  
   source("code/standings.R", local=TRUE)  
   source("code/matrix.R", local=TRUE)
   source("code/headToHead.R", local=TRUE)

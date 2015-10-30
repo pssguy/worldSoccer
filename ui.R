@@ -19,36 +19,30 @@ dashboardPage(
         "Team History",
         menuSubItem("Head To Head", tabName = "matchup"),
         menuSubItem("Result Matrix", tabName = "matrix"),
-        menuSubItem("Standings", tabName = "standings")
+        menuSubItem("Standings", tabName = "standings"),
+        menuSubItem("Sequences", tabName = "sequences", selected=T)
       ),
      
       menuItem(
         "Other Leagues",
         menuSubItem("Bundesliga",href = "https://mytinyshinys.shinyapps.io/bundesliga"),
-        # menuSubItem("English",href = "https://mytinyshinys.shinyapps.io/worldSoccer"),
         menuSubItem("Eredivise",href = "https://mytinyshinys.shinyapps.io/eredivise"),
         menuSubItem("La Liga",href = "https://mytinyshinys.shinyapps.io/laLiga"),
         menuSubItem("Serie A",href = "https://mytinyshinys.shinyapps.io/seriea")
       ),
       menuItem("PFA Awards", tabName = "pfaPlayers"),
-      menuItem("Deloitte Rankings", tabName = "deloitte", selected =T),
-      menuItem(
-        "Other Dashboards",
-        menuSubItem("Climate",href = "https://mytinyshinys.shinyapps.io/climate"),
-        menuSubItem("Cricket",href = "https://mytinyshinys.shinyapps.io/cricket"),
-        menuSubItem("MainlyMaps",href = "https://mytinyshinys.shinyapps.io/mainlyMaps"),
-        menuSubItem("MLB",href = "https://mytinyshinys.shinyapps.io/mlbCharts"),
-        
-        menuSubItem("WikiGuardian",href = "https://mytinyshinys.shinyapps.io/wikiGuardian")
-      ),
+      menuItem("Deloitte Rankings", tabName = "deloitte"),
       
-      menuItem("Info",tabName = "info",icon = icon("info")),
+      tags$hr(),
+      menuItem(text="",href="https://mytinyshinys.shinyapps.io/dashboard",badgeLabel = "All Dashboards and Trelliscopes (14)"),
+      tags$hr(),
       
-      menuItem("", icon = icon("twitter-square"),
-               href = "https://twitter.com/pssGuy"),
-      menuItem("", icon = icon("envelope"),
-               href = "mailto:agcur@rogers.com")
-      
+      tags$body(
+        a(class="addpad",href="https://twitter.com/pssGuy", target="_blank",img(src="images/twitterImage25pc.jpg")),
+        a(class="addpad2",href="mailto:agcur@rogers.com", img(src="images/email25pc.jpg")),
+        a(class="addpad2",href="https://github.com/pssguy",target="_blank",img(src="images/GitHub-Mark30px.png")),
+        a(href="https://rpubs.com/pssguy",target="_blank",img(src="images/RPubs25px.png"))
+      )
 
       
     )
@@ -123,6 +117,17 @@ dashboardPage(
                   ggvisOutput("HtoHPos")
                 )
               )),
+      tabItem("sequences",
+              
+              fluidRow(column(
+                width = 12,
+                box(
+                  width = 12,height=800,
+                  status = "success", solidHeader = TRUE,
+                  title = "Sequences",
+                 dimpleOutput("teamSeqs")
+                )
+              ))),
       
       tabItem("pfaPlayers",
               fluidRow(

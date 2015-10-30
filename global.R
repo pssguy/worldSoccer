@@ -8,6 +8,9 @@ library(ggplot2)
 library(tidyr)
 library(markdown)
 library(readr)
+library(doBy)
+
+library(rcdimple)
 
 #df <- tbl_df(engsoccerdata2)
 #df$gameDate <- as.Date(df$Date) # takes a while
