@@ -13,9 +13,10 @@ function(input, output, session) {
     } else if (input$sbMenu=="sequences") {
       inputPanel(
         selectInput("seq_Team","Choose Team",teamOptions,selected="Liverpool"),
-        sliderInput("seq_Run", "Choose Sequence Length", min=1,max=100,value=5,sep=""),
-        radioButtons("seq_venue",label=NULL,c("All","Home","Away"),inline=TRUE),
-        radioButtons("seq_category",label=NULL,c("Win","No Win","Loss","No Loss"),inline=TRUE),
+        uiOutput("seqOpps"),
+        numericInput("seq_Run", "Choose Sequence Length", min=1,max=100,value=5),
+        radioButtons("seq_Venue",label=NULL,c("All","Home","Away"),inline=TRUE),
+        radioButtons("seq_Category",label=NULL,c("Win","No Win","Loss","No Loss"),inline=TRUE),
         actionButton("seq_Button","Get Chart")
       )
       
@@ -60,6 +61,16 @@ function(input, output, session) {
     })
     
 
+    output$seqOpps <- renderUI({
+      opponents <- df %>% 
+        filter(home==input$seq_Team) %>% 
+        select(visitor) %>% 
+        unique() %>% 
+        arrange(visitor) %>% 
+        .$visitor 
+      
+      selectInput("seq_Opp","Opposition",choices=c("All",opponents))
+    })
   
 
     
