@@ -112,11 +112,18 @@ output$teamSeqs <- renderDimple({
     filter(slength>=input$seq_Run) %>% 
     left_join(data()$allGames) %>% 
     rename(Sequence=slength) %>%
-    dimple(x="gameDate",y="Sequence",type="bar")#
+    dimple(x="gameDate",y="Sequence",type="bar") %>% 
+      xAxis(title="Initial Game Date")  
   } else if (input$seq_Venue=="Home") {
     data()$df_seq %>% 
       filter(slength>=input$seq_Run) %>% 
       left_join(data()$home) %>% 
+      rename(Sequence=slength) %>%
+      dimple(x="gameDate",y="Sequence",type="bar")#
+  } else if (input$seq_Venue=="Away") {
+    data()$df_seq %>% 
+      filter(slength>=input$seq_Run) %>% 
+      left_join(data()$away) %>% 
       rename(Sequence=slength) %>%
       dimple(x="gameDate",y="Sequence",type="bar")#
   } 

@@ -19,8 +19,9 @@ dashboardPage(
         "Team History",
         menuSubItem("Head To Head", tabName = "matchup"),
         menuSubItem("Result Matrix", tabName = "matrix"),
-        menuSubItem("Standings", tabName = "standings"),
-        menuSubItem("Sequences", tabName = "sequences", selected=T)
+        menuSubItem("Season Cumulatives", tabName = "cumulative", selected =T),
+        menuSubItem("Standings", tabName = "standings")
+      #  menuSubItem("Sequences", tabName = "sequences")
       ),
      
       menuItem(
@@ -117,15 +118,27 @@ dashboardPage(
                   ggvisOutput("HtoHPos")
                 )
               )),
-      tabItem("sequences",
+#       tabItem("sequences",
+#               
+#               fluidRow(column(
+#                 width = 12,
+#                 box(
+#                   width = 12,height=800,
+#                   status = "success", solidHeader = TRUE,
+#                   title = "Sequences",
+#                  dimpleOutput("teamSeqs")
+#                 )
+ #            ))),
+      
+      tabItem("cumulative",
               
               fluidRow(column(
                 width = 12,
                 box(
                   width = 12,height=800,
                   status = "success", solidHeader = TRUE,
-                  title = "Sequences",
-                 dimpleOutput("teamSeqs")
+                  title = "Cumulative",
+                  plotOutput("cumulativePlot")
                 )
               ))),
       

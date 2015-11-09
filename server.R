@@ -14,7 +14,7 @@ function(input, output, session) {
       inputPanel(
         selectInput("seq_Team","Choose Team",teamOptions,selected="Liverpool"),
         uiOutput("seqOpps"),
-        numericInput("seq_Run", "Choose Sequence Length", min=1,max=100,value=5),
+        numericInput("seq_Run", "Choose Minimum Sequence", min=1,max=100,value=5),
         radioButtons("seq_Venue",label=NULL,c("All","Home","Away"),inline=TRUE),
         radioButtons("seq_Category",label=NULL,c("Win","No Win","Loss","No Loss"),inline=TRUE),
         actionButton("seq_Button","Get Chart")
@@ -80,11 +80,13 @@ function(input, output, session) {
   
 ## link to detailed code by menuItem
 
-    source("code/teamSequences.R", local=TRUE)  
+ #   source("code/teamSequences.R", local=TRUE)  
   source("code/standings.R", local=TRUE)  
   source("code/matrix.R", local=TRUE)
   source("code/headToHead.R", local=TRUE)
   source("code/pfaPlayers.R", local=TRUE)
     source("code/deloitte.R", local=TRUE)
+    source("code/cumulativesBySeason.R", local=TRUE)
+    
 
 }
