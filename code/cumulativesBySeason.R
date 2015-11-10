@@ -18,24 +18,43 @@ output$cumulativePlot <- renderPlot({
   #  group_by(Season)  # highest was 120 years ago
   
   # groups for cooloring
-  df_all$grp <- ifelse(df_all$Season <1992, 0, ifelse(df_all$Season>1991&df_all$Season<2015,1,2))
+ 
   
+  ## highl;ight premYears - if in and current year
   
+  premYears <- df_all %>% 
+    filter(Season>1991&tier==1) %>% 
+    select(Season)
+  
+  premYears <- unique(premYears$Season)
+  print(premYears)
+  
+#   df_all$grp <- ifelse(df_all$Season <1992, 0, ifelse(df_all$Season %in% premYears,1,0))
+#   df_all$grp <- ifelse(df_all$Season == 2015, 2, df_all$grp)
+  
+  df_all$grp <- ifelse(df_all$Season ==2015, 2, ifelse(df_all$Season %in% premYears,1,0)) #not quite right
+ # df_all$grp <- ifelse(df_all$Season == 2015, 2, df_all$grp)
+  
+  df_prem <- df_all %>%  
+    filter(Season %in% premYears&tier==1)
   
   df_2015 <- df_all %>%  
     filter(Season=="2015")
   
-  df_prem <- df_all %>% 
-    filter(Season>1991&Season<2015)
+#   df_prem <- df_all %>% 
+#     filter(Season>1991&Season<2015)
+  
+ theTitle <- paste0(input$team," - League Goals For and Against By Game")
+ print(theTitle)
   
   ggplot(df_all, aes(gameOrder, cumG, group=Season, color=grp)) +
     geom_line(aes(group=Season, color=factor(grp))) +
     geom_line(data=df_prem, aes(gameOrder, cumG, group=Season, color=factor(grp))) +  
     geom_line(data=df_2015, aes(gameOrder, cumG, group=Season, color=factor(grp)), lwd=1.1) +
     xlab("Games Played") + ylab("Cumulative Goals by Both Teams") +
-    scale_color_manual(values=c("gray80","#F9966B" , "red")) + #Error: Insufficient values in manual scale. 113 needed but only 2 provided. this was pre grouping
+    scale_color_manual(values=c("gray80","#F9966B" , "red")) +
     scale_x_continuous(breaks=c(1:42), labels=NULL) +
-    ggtitle("Manchester United - League Goals For and Against By Game") +
+    labs(title=theTitle) +
     theme(
       plot.title = element_text(hjust=0,vjust=1, size=rel(1.7)),
       panel.background = element_blank(),

@@ -133,9 +133,9 @@ dashboardPage(
       tabItem("cumulative",
               
               fluidRow(column(
-                width = 12,
+                width = 6,
                 box(
-                  width = 12,height=800,
+                  width = 12,
                   status = "success", solidHeader = TRUE,
                   title = "Cumulative",
                   plotOutput("cumulativePlot")
