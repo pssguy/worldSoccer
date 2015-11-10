@@ -20,6 +20,16 @@ function(input, output, session) {
         actionButton("seq_Button","Get Chart")
       )
       
+    } else if (input$sbMenu=="cumulative") {
+      
+      inputPanel(
+        
+        selectInput("team","Choose Team",teamOptions,selected="Liverpool"),
+        radioButtons("cumulative",label="Goals in Game",c("For","Ag","Total"), inline=T)
+      )
+      
+    
+      
     } else if (input$sbMenu=="pfaPlayers") {
     
       inputPanel(sliderInput(

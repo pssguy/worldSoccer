@@ -137,7 +137,7 @@ dashboardPage(
                 box(
                   width = 12,
                   status = "success", solidHeader = TRUE,
-                  title = "Cumulative",
+                  title = "Cumulative", footer="Current Season and Premier League years highlighted",
                   plotOutput("cumulativePlot")
                 )
               ))),
