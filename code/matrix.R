@@ -55,9 +55,13 @@ output$plot_matrix <- renderPlot({
   df$visitor <- factor(df$visitor, levels=temp1$team)
   #  levels(df$visitor)
   
+
+  
   ggplot(df, aes(home, visitor, fill = factor(result))) + 
-    geom_tile(colour="gray20", size=1.5, family="bold", stat="identity", height=1, width=1) + 
-    geom_text(data=df, aes(home, visitor, label = FT), color="black", size=rel(2.5)) +
+    
+    geom_tile(colour="gray20", size=1.5,  stat="identity") +
+   
+    geom_text(data=df, aes(home, visitor, label = FT), color="black", size=rel(3.0)) +
     coord_flip() +
     scale_x_discrete(expand = c(0, 0)) +
     scale_y_discrete(expand = c(0, 0)) +
@@ -75,6 +79,7 @@ output$plot_matrix <- renderPlot({
       legend.position = "none",
       axis.text.x  = element_text(angle=90, vjust=0.5, hjust=0)        
     )
+  
   
   
 })

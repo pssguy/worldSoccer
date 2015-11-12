@@ -91,7 +91,7 @@ dashboardPage(
                   width = 12,
                   status = "success", solidHeader = TRUE,
                   title = "Match Matrix - Ordered Vertically by Final Position ",
-                  plotOutput("plot_matrix")
+                  plotOutput("plot_matrix",height="600px")
                 )
               ))),
       tabItem("matchup",
