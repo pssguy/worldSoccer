@@ -97,6 +97,8 @@ function(input, output, session) {
   source("code/pfaPlayers.R", local=TRUE)
     source("code/deloitte.R", local=TRUE)
     source("code/cumulativesBySeason.R", local=TRUE)
+    source("code/teamHeatMap.R", local=TRUE)
+    
     
 
 }

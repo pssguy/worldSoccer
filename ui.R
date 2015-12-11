@@ -19,7 +19,8 @@ dashboardPage(
         "Team History",
         menuSubItem("Head To Head", tabName = "matchup"),
         menuSubItem("Result Matrix", tabName = "matrix"),
-        menuSubItem("Season Cumulatives", tabName = "cumulative", selected =T),
+        menuSubItem("Season Cumulatives", tabName = "cumulative"),
+        menuSubItem("Scoreline Heatmap",tabName = "tm_heat", selected=T),
         menuSubItem("Standings", tabName = "standings")
       #  menuSubItem("Sequences", tabName = "sequences")
       ),
@@ -226,7 +227,25 @@ dashboardPage(
               collapsible = TRUE, collapsed = TRUE,
               DT::dataTableOutput("deloitteData"))
             ),
-    
+tabItem("tm_heat",
+        
+        
+        box(
+          title = "Heatmap", solidHeader = TRUE,status = 'success',
+          width = 6,
+          selectInput("heatTeam","Choose team",teamOptions, selected="Liverpool"),
+          plotlyOutput("heatResults"),
+          h4("Click on a cell in the heatmap to display table of results")
+         
+        ),
+        box(
+          title = "Results by Scoreline", solidHeader = TRUE,status = 'success',
+          width = 6,
+          uiOutput("heatHeader"),
+          DT::dataTableOutput("heatTable")
+          
+        )
+), 
     
     
     tabItem("info", includeMarkdown("info.md"))
