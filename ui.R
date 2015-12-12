@@ -233,9 +233,12 @@ tabItem("tm_heat",
         box(
           title = "Heatmap", solidHeader = TRUE,status = 'success',
           width = 6,
-          selectInput("heatTeam","Choose team",teamOptions, selected="Liverpool"),
+          selectInput("heatTeam",NULL,c("Choose Team" = "",teamOptions)),
+          selectInput("heatOpponent",NULL,c("Choose Opponent" = "",c("All Teams",teamOptions))),
+          sliderInput("heatYears","Season Range",min=1888,max=2015,value=c(1992,2015),sep=""),
+          submitButton("Get chart"),
           plotlyOutput("heatResults"),
-          h4("Click on a cell in the heatmap to display table of results")
+          h4("Click on a cell in the heatmap to display table of results.   If no chart appears, the teams did not meet during time period")
          
         ),
         box(

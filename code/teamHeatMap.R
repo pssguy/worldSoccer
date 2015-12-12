@@ -1,6 +1,7 @@
 output$heatResults <- renderPlotly({
   
   if (is.null(input$heatTeam)) return()
+  if (input$heatTeam=="") return()
   
   print(input$heatTeam)
   home <- df %>% 
@@ -14,6 +15,9 @@ output$heatResults <- renderPlotly({
   
   total <- rbind(home,away) 
   total$team<-input$heatTeam
+  
+ total <- total %>% 
+    mutate(Opponents=ifelse(home==team,visitor,home),Venue= ifelse(home==team,"Home","Away"))
   
   print(sort(names(total)))
   
@@ -33,10 +37,30 @@ output$heatResults <- renderPlotly({
     mutate(combo=paste0(GF,GA)) #169 13x13
   
   ## this can be filtered by oppo year etc as required
+  
+  startYr <- input$heatYears[1]
+  endYr <- input$heatYears[2]
+  
+  print(startYr)
+  print(endYr)
+  print(input$heatOpponent)
+  
+  if(input$heatOpponent=="All Teams") {
   temp <- total %>%
+    filter(Season>=startYr&Season<=endYr) %>% 
     mutate(combo=paste0(GF,GA)) %>%
     group_by(combo) %>%
     tally()
+  } else {
+    temp <- total %>%
+      filter(Opponents==input$heatOpponent&Season>=startYr&Season<=endYr) %>% 
+      mutate(combo=paste0(GF,GA)) %>%
+      group_by(combo) %>%
+      tally()
+  }
+  
+  print(nrow(temp))
+  if (nrow(temp)==0) return()
   
   test <- allCombos %>%
     left_join(temp) %>% 
@@ -110,12 +134,25 @@ output$heatTable <- DT::renderDataTable({
     
     print(glimpse(total))
     
+    startYr <- input$heatYears[1]
+    endYr <- input$heatYears[2]
+    
+    if(input$heatOpponent=="All Teams") { 
     prob <-   total %>% 
-   filter(GF==gFor&GA==gAg&team==input$heatTeam) %>% 
+   filter(GF==gFor&GA==gAg&team==input$heatTeam&Season>=startYr&Season<=endYr) %>% 
       mutate(Opponents=ifelse(home==team,visitor,home),Venue= ifelse(home==team,"Home","Away")) %>% 
+            arrange(desc(gameDate))
+    } else {
+      prob <-   total %>% 
+        filter(GF==gFor&GA==gAg&team==input$heatTeam) %>% 
+        mutate(Opponents=ifelse(home==team,visitor,home),Venue= ifelse(home==team,"Home","Away")) %>% 
+        filter(Opponents==input$heatOpponent&Season>=startYr&Season<=endYr) %>% 
+        arrange(desc(gameDate))  
       
-      arrange(desc(gameDate))
- 
+      
+    }
+    
+    
  print(glimpse(prob)) ## comes out with previous club eg when switching form crystal palace to crawlwy
  
  prob %>% 
