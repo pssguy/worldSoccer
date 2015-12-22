@@ -95,7 +95,7 @@ function(input, output, session) {
   
 ## link to detailed code by menuItem
 
- #   source("code/teamSequences.R", local=TRUE)  
+  
   source("code/standings.R", local=TRUE)  
   source("code/matrix.R", local=TRUE)
   source("code/headToHead.R", local=TRUE)
@@ -103,6 +103,7 @@ function(input, output, session) {
     source("code/deloitte.R", local=TRUE)
     source("code/cumulativesBySeason.R", local=TRUE)
     source("code/teamHeatMap.R", local=TRUE)
+    source("code/teamSequences.R", local=TRUE)
     
     
 

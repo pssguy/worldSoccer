@@ -21,8 +21,8 @@ dashboardPage(
         menuSubItem("Result Matrix", tabName = "matrix"),
         menuSubItem("Season Cumulatives", tabName = "cumulative"),
         menuSubItem("Scoreline Heatmap",tabName = "tm_heat"),
-        menuSubItem("Standings", tabName = "standings")
-      #  menuSubItem("Sequences", tabName = "sequences")
+        menuSubItem("Standings", tabName = "standings"),
+        menuSubItem("Sequences", tabName = "sequences", selected = T)
       ),
      
       menuItem(
@@ -119,18 +119,18 @@ dashboardPage(
                   ggvisOutput("HtoHPos")
                 )
               )),
-#       tabItem("sequences",
-#               
-#               fluidRow(column(
-#                 width = 12,
-#                 box(
-#                   width = 12,height=800,
-#                   status = "success", solidHeader = TRUE,
-#                   title = "Sequences",
-#                  dimpleOutput("teamSeqs")
-#                 )
- #            ))),
-#       
+      tabItem("sequences",
+              
+              fluidRow(column(
+                width = 12,
+                box(
+                  width = 12,height=800,
+                  status = "success", solidHeader = TRUE,
+                  title = "Sequences",
+                 plotlyOutput("teamSeqs")
+                )
+            ))),
+      
       tabItem("cumulative",
               
 #               fluidRow(column(

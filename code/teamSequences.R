@@ -3,7 +3,7 @@
 ## sort venue link
 
 
-data <- eventReactive(input$seq_Button,{
+dataTeamSeqs <- eventReactive(input$seq_Button,{
   if (input$seq_Opp=="All") {
   home <- df %>% 
     filter(home==input$seq_Team) %>% 
@@ -39,14 +39,20 @@ data <- eventReactive(input$seq_Button,{
   }  
   
   print(glimpse(allGames))
+  print(input$seq_Venue)
+  print(input$seq_Category)
+  
   
   if (input$seq_Venue=="All") {
   if (input$seq_Category=="Win") {
-  df_seq <- allGames %>% 
-    select(team,gameDate,goaldif,win) %>%
+  test <- allGames %>% 
+    select(team,gameDate,goaldif,win)
+ # print(glimpse(test))
+  df_seq <- test %>%
     do (subSeq(.$win)) %>% 
     filter(value==1) %>% 
     mutate(gameOrder=as.integer(first))
+ # print(glimpse(df_seq))
   } else if (input$seq_Category=="No Win"){
     df_seq <- allGames %>% 
       select(team,gameDate,goaldif,win) %>%
@@ -95,37 +101,47 @@ data <- eventReactive(input$seq_Button,{
         mutate(gameOrder=as.integer(first))
     }
   }
-  
+  #print(glimpse(df_seq))
   info=list(df_seq=df_seq,allGames=allGames,away=away,home=home)
   return(info)
   
 })
 
-output$teamSeqs <- renderDimple({
+output$teamSeqs <- renderPlotly({
+#   print("seqValue")
+#   print(input$seq_Venue)
+#   print("are we good")
+#   print(glimpse(dataTeamSeqs()$df_seq))
+#   print("not sure")
+  if (is.null(dataTeamSeqs()$df_seq)) return() 
   
-  if (is.null( data()$df_seq)) return() 
-  
-  #print(glimpse( data()$df_seq))
+ # print(glimpse(dataTeamSeqs()$df_seq))
+  df_seq <- dataTeamSeqs()$df_seq
+  allGames <- dataTeamSeqs()$allGames
+  home <- dataTeamSeqs()$home
+  away <- dataTeamSeqs()$away
+  print(glimpse(dataTeamSeqs()$df_seq))
   
   if (input$seq_Venue=="All") {
-  data()$df_seq %>% 
+chart <-  df_seq %>% 
     filter(slength>=input$seq_Run) %>% 
-    left_join(data()$allGames) %>% 
-    rename(Sequence=slength) %>%
-    dimple(x="gameDate",y="Sequence",type="bar") %>% 
-      xAxis(title="Initial Game Date")  
+    left_join(allGames) %>% 
+    rename(Sequence=slength)
+
   } else if (input$seq_Venue=="Home") {
-    data()$df_seq %>% 
+    chart <-     df_seq %>% 
       filter(slength>=input$seq_Run) %>% 
-      left_join(data()$home) %>% 
-      rename(Sequence=slength) %>%
-      dimple(x="gameDate",y="Sequence",type="bar")#
+      left_join(home) %>% 
+      rename(Sequence=slength) 
   } else if (input$seq_Venue=="Away") {
-    data()$df_seq %>% 
+    chart <-     df_seq %>% 
       filter(slength>=input$seq_Run) %>% 
-      left_join(data()$away) %>% 
-      rename(Sequence=slength) %>%
-      dimple(x="gameDate",y="Sequence",type="bar")#
+      left_join(away) %>% 
+      rename(Sequence=slength) 
   } 
-  
+  plot_ly(chart,x=gameDate,y=Sequence,type="bar",hoverinfo = "text",
+          text = paste0("From:",gameDate)) %>%
+    layout(hovermode = "closest",
+           xaxis=list(title="")
+    )
 })

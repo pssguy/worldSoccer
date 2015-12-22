@@ -42,6 +42,9 @@ getSeason = function(data,location,session){
 
 # position by year graph
 observe ({
+#  observeEvent(input$team,{
+#   print("inputteam")
+#   print(input$team)
   if (is.null(input$team)) return()
 
   
