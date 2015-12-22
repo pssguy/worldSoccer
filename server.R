@@ -24,14 +24,14 @@ function(input, output, session) {
       
       inputPanel(
         
-        selectInput("team","Choose Team",teamOptions,selected="Liverpool"),
-        radioButtons("cumulative",label="Goals in Game",c("For","Ag","Total"), inline=T)
+        selectInput("cumteam","Choose Team",teamOptions,selected="Liverpool"),
+        radioButtons("cumulative",label="Goals in Game",c("For","Ag","Diff","Total Both Teams"), inline=T)
       )
       
     
       
     } else if (input$sbMenu=="pfaPlayers") {
-    
+     print("pfa")
       inputPanel(sliderInput(
         "pfaYear","Year(s)",min = 1973,max = 2015,value = c(1992,2015),sep = "", width =
           200)
@@ -43,9 +43,14 @@ function(input, output, session) {
                generated from football operations. It is produced annually by the accountancy
                firm Deloitte and released in early February of each year,
                describing the season most recently finished")
-      
+    } else if (input$sbMenu=="tm_heat") {
+      inputPanel(
+                selectInput("heatTeam",NULL,c("Choose Team" = "",teamOptions)),
+                selectInput("heatOpponent",NULL,c("Choose Opponent" = "",c("All Teams",teamOptions))),
+                sliderInput("heatYears","Season Range",min=1888,max=2015,value=c(1992,2015),sep="")
+      )
     } else {
-      
+      print("normal")
       inputPanel(selectInput("team","Choose Team",teamOptions,selected="Liverpool"))
     }
 })
@@ -63,7 +68,7 @@ function(input, output, session) {
        
        divOpts <- divChoice$division
        inputPanel(
-       selectInput("division","Choose division",divOpts)
+       selectInput("division","Choose Tier",divOpts)
        )
       } else {
         return()

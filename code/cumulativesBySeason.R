@@ -1,17 +1,18 @@
 
-output$cumulativePlot <- renderPlot({
+dataCum <- reactive({
   
-  if(is.null(input$team)) return()
+  if(is.null(input$cumteam)) return()
   
- 
+  
   
   df_all <-temp %>% 
     group_by(Season,team) %>% 
     arrange(Date) %>% 
-    mutate(gameOrder=row_number(),cumGA=cumsum(GA),cumGF=cumsum(GF),cumG=cumGA+cumGF) %>% 
-    filter(team==input$team) %>% 
+    mutate(gameOrder=row_number(),cumGA=cumsum(GA),cumGF=cumsum(GF),cumG=cumGA+cumGF,cumGD=cumGF-cumGA) %>% 
+    filter(team==input$cumteam) %>% 
+    mutate(tier=as.character(tier)) %>% 
     ungroup()
- 
+  
   ## highl;ight premYears - if in and current year
   
   premYears <- df_all %>% 
@@ -19,41 +20,74 @@ output$cumulativePlot <- renderPlot({
     select(Season)
   
   premYears <- unique(premYears$Season)
-
+  
   
   df_all$grp <- ifelse(df_all$Season ==2015, 2, ifelse(df_all$Season %in% premYears,1,0)) #not quite right
-
+  
   
   df_prem <- df_all %>%  
     filter(Season %in% premYears&tier==1)
   
   df_2015 <- df_all %>%  
-    filter(Season=="2015")
+    filter(Season=="2015") 
   
   test <- df_all %>% 
     filter(grp==1)
   
+  print(glimpse(df_all))
+  
+  # for prem years want to exclude non_prem
+  df_nonPrem <- df_all %>% 
+    anti_join(df_prem) 
+  print(glimpse(df_all))
+  print(glimpse(df_2015))
+  
+  
+  info= list(df_all=df_all,df_2015=df_2015,df_prem=df_prem,df_nonPrem=df_nonPrem)
+  return(info)
+  
+})
+
 
   
- df_all <- df_all %>% 
-   anti_join(df_prem)
+  
 
+  
+
+  
+output$cumulativePlot <- renderPlot({
+  if(is.null(input$cumteam)) return()
+  
+ 
+
+  df_all <- dataCum()$df_all
+  df_prem <- dataCum()$df_prem
+  df_nonPrem <- dataCum()$df_nonPrem
+  df_2015 <- dataCum()$df_2015
 
   if (input$cumulative=="For") {
- theTitle <- paste0(input$team," - League Goals For")
-basePlot <-  ggplot(df_all, aes(gameOrder, cumGF, group=Season, color=grp))  +
+ theTitle <- paste0(input$cumteam," - League Goals For")
+basePlot <-  ggplot(df_nonPrem, aes(gameOrder, cumGF, group=Season, color=grp))  +
   geom_line(aes(group=Season, color=factor(grp))) +
   geom_line(data=df_prem, aes(gameOrder, cumGF, group=Season, color=factor(grp))) +  
   geom_line(data=df_2015, aes(gameOrder, cumGF, group=Season, color=factor(grp)), lwd=1.1)
   } else if (input$cumulative=="Ag") {
-  theTitle <- paste0(input$team," - League Goals Against")
-  basePlot <-  ggplot(df_all, aes(gameOrder, cumGA, group=Season, color=grp))  +
+  theTitle <- paste0(input$cumteam," - League Goals Against")
+  basePlot <-  ggplot(df_nonPrem, aes(gameOrder, cumGA, group=Season, color=grp))  +
     geom_line(aes(group=Season, color=factor(grp))) +
     geom_line(data=df_prem, aes(gameOrder, cumGA, group=Season, color=factor(grp))) +  
     geom_line(data=df_2015, aes(gameOrder, cumGA, group=Season, color=factor(grp)), lwd=1.1)
-} else if (input$cumulative=="Total") {
-  theTitle <- paste0(input$team," - League Goals Total in Game")
-  basePlot <-  ggplot(df_all, aes(gameOrder, cumG, group=Season, color=grp))  +
+  } else if (input$cumulative=="Diff") {
+    print("enter diff")
+    theTitle <- paste0(input$cumteam," - League Goals Difference")
+    basePlot <-  ggplot(df_nonPrem, aes(gameOrder, cumGD, group=Season, color=grp))  +
+      geom_line(aes(group=Season, color=factor(grp))) +
+      geom_line(data=df_prem, aes(gameOrder, cumGD, group=Season, color=factor(grp))) #+  
+    #  geom_line(data=df_2015, aes(gameOrder, cumGD, group=Season, color=factor(grp)), lwd=1.1)
+    
+} else if (input$cumulative=="Total Both Teams") {
+  theTitle <- paste0(input$cumteam," - League Goals Total in Game")
+  basePlot <-  ggplot(df_nonPrem, aes(gameOrder, cumG, group=Season, color=grp))  +
     geom_line(aes(group=Season, color=factor(grp))) +
     geom_line(data=df_prem, aes(gameOrder, cumG, group=Season, color=factor(grp))) +  
     geom_line(data=df_2015, aes(gameOrder, cumG, group=Season, color=factor(grp)), lwd=1.1)
@@ -81,5 +115,14 @@ basePlot +
       axis.ticks.x = element_blank(),
       legend.position = "none"
     )
+  
+})
+
+
+
+output$cumulativeGameOrderPlot <- renderPlotly({
+  if(is.null(input$cumteam)) return()
+  # this shows every value
+  plot_ly(dataCum()$df_all, x = Season, y = cumGD, mode = "markers", color = tier)
   
 })
