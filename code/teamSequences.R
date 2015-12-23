@@ -6,28 +6,34 @@
 dataTeamSeqs <- eventReactive(input$seq_Button,{
   if (input$seq_Opp=="All") {
   home <- df %>% 
+    arrange(gameDate) %>% 
     filter(home==input$seq_Team) %>% 
     mutate(gameOrder=row_number(),win=ifelse(result=="H",1,0),
            loss=ifelse(result=="A",1,0),nowin=ifelse(result!="H",1,0),noloss=ifelse(result!="A",1,0),
            team=home)
   
+  write_csv(home,"homeprob.csv")
+  
   away <- df %>% 
+    arrange(gameDate) %>% 
     filter(visitor==input$seq_Team) %>% 
     mutate(gameOrder=row_number(),win=ifelse(result=="A",1,0),
            loss=ifelse(result=="H",1,0),nowin=ifelse(result!="A",1,0),noloss=ifelse(result!="H",1,0),
            team=visitor)
-  
+  write_csv(away,"awayprob.csv")
   allGames <- rbind(home,away) %>% 
     arrange(gameDate) %>% 
     mutate(gameOrder=row_number())
   } else {
     home <- df %>% 
       filter(home==input$seq_Team&visitor==input$seq_Opp) %>% 
+      arrange(gameDate) %>% 
       mutate(gameOrder=row_number(),win=ifelse(result=="H",1,0),
              loss=ifelse(result=="A",1,0),nowin=ifelse(result!="H",1,0),noloss=ifelse(result!="A",1,0),
              team=home)
     
     away <- df %>% 
+      arrange(gameDate) %>% 
       filter(visitor==input$seq_Team&home==input$seq_Opp) %>% 
       mutate(gameOrder=row_number(),win=ifelse(result=="A",1,0),
              loss=ifelse(result=="H",1,0),nowin=ifelse(result!="A",1,0),noloss=ifelse(result!="H",1,0),
@@ -95,6 +101,33 @@ dataTeamSeqs <- eventReactive(input$seq_Button,{
     } else if (input$seq_Category=="No Loss"){
       
       df_seq <- home %>% 
+        select(team,gameDate,goaldif,loss) %>%
+        do (subSeq(.$loss)) %>% 
+        filter(value==0) %>% 
+        mutate(gameOrder=as.integer(first))
+    }
+  } else if (input$seq_Venue=="Away") {
+    if (input$seq_Category=="Win") {
+      df_seq <- away %>% 
+        select(team,gameDate,goaldif,win) %>%
+        do (subSeq(.$win)) %>% 
+        filter(value==1) %>% 
+        mutate(gameOrder=as.integer(first))
+    } else if (input$seq_Category=="No Win"){
+      df_seq <- away %>% 
+        select(team,gameDate,goaldif,win) %>%
+        do (subSeq(.$win)) %>% 
+        filter(value==0) %>% 
+        mutate(gameOrder=as.integer(first))
+    } else if (input$seq_Category=="Loss"){
+      df_seq <- away %>% 
+        select(team,gameDate,goaldif,loss) %>%
+        do (subSeq(.$loss)) %>% 
+        filter(value==1) %>% 
+        mutate(gameOrder=as.integer(first))
+    } else if (input$seq_Category=="No Loss"){
+      
+      df_seq <- away %>% 
         select(team,gameDate,goaldif,loss) %>%
         do (subSeq(.$loss)) %>% 
         filter(value==0) %>% 
