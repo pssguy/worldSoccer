@@ -127,8 +127,8 @@ output$cumulativeGameOrderPlot <- renderPlotly({
   write_csv(df_all,"probs.csv")
 #  cols <- sort(RColorBrewer::brewer.pal(nlevels(as.factor(df_all$tier)), "BrBG")) #cols ""#D8B365" "#F5F5F5" "#5AB4AC" nlevels(df_all$tier)=0 so add factor
   
-  print(cols)
-  
+  #print(cols)
+  df1 <- subset(df_all,gameOrder==17)
   plotTitle <- paste0(input$cumteam, " - Goal Difference by Games Played  ",
                      " <br> Line indicates most recent round
                       <br> Zoom and Pan as desired")

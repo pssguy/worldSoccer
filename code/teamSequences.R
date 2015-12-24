@@ -170,6 +170,7 @@ chart <-  df_seq %>%
     rename(Sequence=slength)
 
   } else if (input$seq_Venue=="Home") {
+    print(input$seq_Run)
     chart <-     df_seq %>% 
       filter(slength>=input$seq_Run) %>% 
       left_join(home) %>% 
