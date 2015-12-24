@@ -11,7 +11,8 @@ library(readr)
 library(doBy)
 
 library(rcdimple)
-
+library(plotly)
+library(crosstalk)
 #df <- tbl_df(engsoccerdata2)
 #df$gameDate <- as.Date(df$Date) # takes a while
 
@@ -20,11 +21,20 @@ df <- readRDS("updated.rds")
 
 ## make tables - shpuld look at make table function
 
-temp <-
-  rbind(
-    df %>% select(team=home, opp=visitor, GF=hgoal, GA=vgoal,Season,tier,division),
-    df %>% select(team=visitor, opp=home, GF=vgoal, GA=hgoal,Season,tier,division)
-  )
+
+df_home <- df %>% select(team=home, opp=visitor, GF=hgoal, GA=vgoal,Season,tier,division,Date) %>% mutate(venue="home")
+df_away <- df %>% select(team=visitor, opp=home, GF=vgoal, GA=hgoal,Season,tier,division,Date) %>% mutate(venue="away")
+
+temp <- rbind(df_home,df_away)
+# temp <-
+#   rbind(
+#     df %>% select(team=home, opp=visitor, GF=hgoal, GA=vgoal,Season,tier,division,Date),
+#     df %>% select(team=visitor, opp=home, GF=vgoal, GA=hgoal,Season,tier,division,Date)
+#   )
+
+temp <- temp %>% 
+  mutate(Date=as.Date(Date)) %>% 
+  arrange(Date)
 
 ## do adjust based on points for win
 
@@ -69,9 +79,7 @@ all<- rbind(old,new) %>%
   group_by(Season,tier,division) %>% 
   arrange(desc(Pts),desc(gd),desc(gf),team) %>% 
   mutate(Position=row_number()) %>% 
-  ungroup()  %>%
-  
-  
+  ungroup() %>% 
   arrange(tier,Position) %>% 
   group_by(Season) %>% 
   mutate(Overall=row_number()) %>% 
@@ -83,6 +91,8 @@ all$tier <- as.character(all$tier)
 # set to more meaningful  South and North
 all[all$division=="3a",]$division <- "3N"
 all[all$division=="3b",]$division <- "3S"
+
+#write_csv(all,"data/all.csv") ## annual experiment trelliscope finishing positions by year
 
 
 
@@ -115,3 +125,5 @@ topTen <-allYears %>%
   filter(Year==2013) %>% 
   head(.,10) %>% 
   .$Club
+
+print("done global")

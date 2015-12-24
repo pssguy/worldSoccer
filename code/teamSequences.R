@@ -134,8 +134,16 @@ dataTeamSeqs <- eventReactive(input$seq_Button,{
         mutate(gameOrder=as.integer(first))
     }
   }
+  
+  print("printing dates")
+  print(min(allGames$Date))
+  print(max(allGames$Date))
+  
+  firstDate <- 1000*difftime(min(allGames$Date),as.Date("1970-01-01"),units="secs")
+  lastDate <- 1000*difftime(max(allGames$Date),as.Date("1970-01-01"),units="secs")
+  
   #print(glimpse(df_seq))
-  info=list(df_seq=df_seq,allGames=allGames,away=away,home=home)
+  info=list(df_seq=df_seq,allGames=allGames,away=away,home=home,firstDate=firstDate,lastDate=lastDate)
   return(info)
   
 })
@@ -175,6 +183,6 @@ chart <-  df_seq %>%
   plot_ly(chart,x=gameDate,y=Sequence,type="bar",hoverinfo = "text",
           text = paste0("From:",gameDate)) %>%
     layout(hovermode = "closest",
-           xaxis=list(title="")
+           xaxis=list(title="",range=list(dataTeamSeqs()$firstDate,dataTeamSeqs()$lastDate))
     )
 })

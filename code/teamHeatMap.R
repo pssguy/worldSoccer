@@ -107,7 +107,8 @@ output$heatHeader <- renderUI({
 output$heatTable <- DT::renderDataTable({
   
   s <- cv$get() 
-  
+  print(("printing s"))
+  print(length(s))
   if (length(s)==0) {
     return()
   } else {

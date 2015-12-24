@@ -19,10 +19,10 @@ dashboardPage(
         "Team History",
         menuSubItem("Head To Head", tabName = "matchup"),
         menuSubItem("Result Matrix", tabName = "matrix"),
-        menuSubItem("Season Cumulatives", tabName = "cumulative"),
+        menuSubItem("Season Cumulatives", tabName = "cumulative", selected = T),
         menuSubItem("Scoreline Heatmap",tabName = "tm_heat"),
         menuSubItem("Standings", tabName = "standings"),
-        menuSubItem("Sequences", tabName = "sequences", selected = T)
+        menuSubItem("Sequences", tabName = "sequences")
       ),
      
       menuItem(
@@ -145,7 +145,7 @@ dashboardPage(
 box(
   width = 6,
   status = "success", #solidHeader = TRUE,
-  title = "By Games Played",
+  footer = "Points are jittered to allow hover info. Still in beta",
  
   plotlyOutput("cumulativeGameOrderPlot")
 )

@@ -122,7 +122,35 @@ basePlot +
 
 output$cumulativeGameOrderPlot <- renderPlotly({
   if(is.null(input$cumteam)) return()
-  # this shows every value
-  plot_ly(dataCum()$df_all, x = Season, y = cumGD, mode = "markers", color = tier)
+  df_all <- dataCum()$df_all
+  print(glimpse(df_all))
+  write_csv(df_all,"probs.csv")
+#  cols <- sort(RColorBrewer::brewer.pal(nlevels(as.factor(df_all$tier)), "BrBG")) #cols ""#D8B365" "#F5F5F5" "#5AB4AC" nlevels(df_all$tier)=0 so add factor
   
+  print(cols)
+  
+  plotTitle <- paste0(input$cumteam, " - Goal Difference by Games Played  ",
+                     " <br> Line indicates most recent round
+                      <br> Zoom and Pan as desired")
+  
+  p <-plot_ly(df_all, x = Season, y = jitter(cumGD), mode = "markers", color = tier,#colors=cols,
+              marker=list(size=3), hoverinfo="text",
+              text = paste0("Tier: ",tier,
+                            "<br>Season: ",Season,
+                            "<br>Played: ",gameOrder,
+                            "<br>GD: ",cumGD
+              )) %>%
+    layout(hovermode = "closest",
+           showlegend = F,
+           title=plotTitle,
+           xaxis=list(title=""),
+           yaxis=list(title="Cumulative Goal Difference"
+           )
+    )
+  #lineCol <- "#E41A1C" # is a red 
+  
+  p %>%
+    add_trace(x=df1$Season,y=df1$cumGD, mode="line", line=list(color="#E41A1C"))
+  
+ 
 })
