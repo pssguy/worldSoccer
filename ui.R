@@ -113,7 +113,7 @@ dashboardPage(
               ),
               fluidRow(
                 box(
-                  width = 8,
+                  width = 6,
                   status = "success", solidHeader = TRUE,
                   title = "Summary of Seasons Difference in Overall Position",
                   ggvisOutput("HtoHPos")
@@ -124,9 +124,9 @@ dashboardPage(
               fluidRow(column(
                 width = 12,
                 box(
-                  width = 12,height=800,
+                  width = 12,height=500,
                   status = "success", solidHeader = TRUE,
-                  title = "Sequences",
+                  title = "Sequences", footer ="With Specific Opposition, Gaps may indicate no games played",
                  plotlyOutput("teamSeqs")
                 )
             ))),

@@ -12,8 +12,8 @@ headData <- reactive({
   away <- df %>% 
     filter(visitor==input$team) %>% 
     group_by(home) %>% 
-    summarise(P = n(), GF = sum(vgoal), GA = sum(hgoal), GD=GF-GA,
-              W=sum(result=="A"), D=sum(result=="D"), L=sum(result=="H") )%>% 
+    summarise(P = n(), 
+              W=sum(result=="A"), D=sum(result=="D"), L=sum(result=="H"),GF = sum(vgoal), GA = sum(hgoal), GD=GF-GA )%>% 
     rename(opponent=home)
   
   
@@ -22,7 +22,7 @@ headData <- reactive({
   
   summary <- total %>% 
     group_by(opponent) %>% 
-    summarize(P=sum(P),GF=sum(GF),GA=sum(GA),GD=GF-GA,W=sum(W),D=sum(D),L=sum(L)) 
+    summarize(P=sum(P),W=sum(W),D=sum(D),L=sum(L),GF=sum(GF),GA=sum(GA),GD=GF-GA) 
 
   
   info=list(total=total,summary=summary)
