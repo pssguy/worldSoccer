@@ -1,3 +1,6 @@
+# create a holder for all reactive values
+values <- reactiveValues()
+
 
 function(input, output, session) {
   
@@ -12,7 +15,7 @@ function(input, output, session) {
      )
     } else if (input$sbMenu=="sequences") {
       inputPanel(
-        selectInput("seq_Team","Choose Team",teamOptions,selected="Liverpool"),
+        selectInput("seq_Team","Choose Team",teamOptions,selected=values$TEAMNAME),
         uiOutput("seqOpps"),
         numericInput("seq_Run", "Choose Minimum Sequence", min=1,max=100,value=5),
         radioButtons("seq_Venue",label=NULL,c("All","Home","Away"),inline=TRUE),
@@ -24,7 +27,7 @@ function(input, output, session) {
       
       inputPanel(
         
-        selectInput("cumteam","Choose Team",teamOptions,selected="Liverpool"),
+        selectInput("cumteam","Choose Team",teamOptions,selected=values$TEAMNAME),
         radioButtons("cumulative",label="Goals in Game",c("For","Ag","Diff","Total Both Teams"), inline=T)
       )
       
@@ -45,13 +48,14 @@ function(input, output, session) {
                describing the season most recently finished")
     } else if (input$sbMenu=="tm_heat") {
       inputPanel(
-                selectInput("heatTeam",NULL,c("Choose Team" = "",teamOptions)),
+                #selectInput("heatTeam",NULL,c("Choose Team" = "",teamOptions)),
+        selectInput("heatTeam",NULL,teamOptions,selected=values$TEAMNAME),
                 selectInput("heatOpponent",NULL,c("Choose Opponent" = "",c("All Teams",teamOptions))),
                 sliderInput("heatYears","Season Range",min=1888,max=2015,value=c(1992,2015),sep="")
       )
     } else {
       print("normal")
-      inputPanel(selectInput("team","Choose Team",teamOptions,selected="Liverpool"))
+      inputPanel(selectInput("team","Choose Team",teamOptions,selected=values$TEAMNAME))
     }
 })
   
@@ -89,7 +93,29 @@ function(input, output, session) {
   
 
     
-
+    observeEvent(input$team,{
+      
+      values$TEAMNAME <- input$team
+      
+    })
+    
+    observeEvent(input$seq_Team,{
+      
+      values$TEAMNAME <- input$seq_Team
+      
+    })
+    
+    observeEvent(input$heatTeam,{
+      
+      values$TEAMNAME <- input$heatTeam
+      
+    })
+    
+    observeEvent(input$cumteam,{
+      
+      values$TEAMNAME <- input$cumteam
+      
+    })
   
   
   

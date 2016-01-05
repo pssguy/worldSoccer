@@ -50,7 +50,7 @@ output$HtoHGames <- DT::renderDataTable({
   
   df %>% 
     filter((home==input$team&visitor==theOpponent)|(home==theOpponent&visitor==input$team)) %>% 
-    select(Date,home,FT,visitor) %>% 
+    select(Date,home,FT,visitor,tier) %>% 
     arrange(desc(Date)) %>% 
     DT::datatable(rownames=TRUE,selection='single',options= list(pageLength=10,
                                                                  paging = TRUE, searching = FALSE,info=FALSE))

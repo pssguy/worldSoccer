@@ -38,7 +38,39 @@ getSeason = function(data,location,session){
   
 }
 
-
+# # Set up reactive values initially as null
+# seasonValue <- reactiveValues()
+# 
+# getSeason = function(data,location,session) {
+#   if (is.null(data))
+#     return(NULL)
+#   seasonValue$theSeason <- data$Season
+#   
+# }
+# 
+# # position by round chart
+# observe({
+#   
+#   if (is.null(input$team)) return()
+#   if (is.null(seasonValue$theSeason))
+#     return()
+#   print(seasonValue$theSeason)
+#   write_csv(all,"problem.csv")
+#   selection<-  all %>% 
+#     ungroup() %>% 
+#     filter(team==input$team&Season==seasonValue$theSeason) %>% 
+#     ggvis(~round,~position) %>% 
+#     layer_lines() %>% ## not showing until allGames is ungrouped
+#     layer_points(fill =~ res) %>% # may want to add tt
+#     scale_numeric("y", reverse=T, domain=c(1,20)) %>% 
+#     add_legend("fill",title="") %>% 
+#     add_axis("y",title="Position",format='d') %>%
+#     add_axis("x",title="Games Played",format='d') %>%
+#     set_options(height = 480, width = 480)%>% 
+#     bind_shiny("positionByRound")
+#   
+#   
+# })
 
 # position by year graph
 observe ({

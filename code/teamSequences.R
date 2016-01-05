@@ -149,11 +149,7 @@ dataTeamSeqs <- eventReactive(input$seq_Button,{
 })
 
 output$teamSeqs <- renderPlotly({
-#   print("seqValue")
-#   print(input$seq_Venue)
-#   print("are we good")
-#   print(glimpse(dataTeamSeqs()$df_seq))
-#   print("not sure")
+
   if (is.null(dataTeamSeqs()$df_seq)) return() 
   
  # print(glimpse(dataTeamSeqs()$df_seq))
@@ -170,7 +166,7 @@ chart <-  df_seq %>%
     rename(Sequence=slength)
 
   } else if (input$seq_Venue=="Home") {
-    print(input$seq_Run)
+    
     chart <-     df_seq %>% 
       filter(slength>=input$seq_Run) %>% 
       left_join(home) %>% 

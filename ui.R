@@ -57,33 +57,72 @@ dashboardPage(
       tabItem("standings",
               
               fluidRow(
-                column(
-                  width = 6,
-                  box(
-                    width = 12, status = "success", solidHeader = TRUE,
-                    title = "League Position by Year - click point for Table and Results",
-                    ggvisOutput("plot")
-                    
-                  )
+                column(width=5, offset =1,
+                       box(width=12,
+                           status = "success", solidHeader = TRUE,
+                           title = "League Position by Year - click point for other chart and tables",
+                           ggvisOutput("plot")
+                       ) 
                 ),
-                column(
-                  width = 6,
-                  box(
-                    width = 12, status = "success",solidHeader = TRUE,
-                    collapsible = TRUE, title = "League table",
-                    DT::dataTableOutput('standings')
-                  ),
-                  box(
-                    width = 12, status = "success", solidHeader = TRUE,
-                    title = "Season Results",
-                    collapsible = TRUE,
-                    #collapsible=TRUE,collapsed = TRUE, bug?
-                    DT::dataTableOutput("results")
-                    
-                  )
+                column(width=5, offset =1,
+                       box( width=12,
+                            status = "success",solidHeader = TRUE,
+                            collapsible=TRUE, collapsed=F,title = "League Table",
+                            DT::dataTableOutput('standings')
+                       )
+                )),
+              
+              fluidRow(
+#                 column(width=5, offset =1,
+#                        box(
+#                          width = 12, status = "success",solidHeader = TRUE,
+#                          collapsible=TRUE, title = "League Position By Round",
+#                          ggvisOutput("positionByRound")
+#                        )
+#                 ),
+                column(width=5, offset =1,
+                       box(
+                         width = 12, status = "success", solidHeader = TRUE,
+                         title = "Season Results",
+                         collapsible=TRUE,
+                         #collapsible=TRUE,collapsed = TRUE, bug?  
+                         DT::dataTableOutput("results")
+                         
+                       )
                 )
                 
-              )),
+              )
+      ),
+#       tabItem("standings",
+#               
+#               fluidRow(
+#                 column(
+#                   width = 6,
+#                   box(
+#                     width = 12, status = "success", solidHeader = TRUE,
+#                     title = "League Position by Year - click point for Table and Results",
+#                     ggvisOutput("plot")
+#                     
+#                   )
+#                 ),
+#                 column(
+#                   width = 6,
+#                   box(
+#                     width = 12, status = "success",solidHeader = TRUE,
+#                     collapsible = TRUE, title = "League table",
+#                     DT::dataTableOutput('standings')
+#                   ),
+#                   box(
+#                     width = 12, status = "success", solidHeader = TRUE,
+#                     title = "Season Results",
+#                     collapsible = TRUE,
+#                     #collapsible=TRUE,collapsed = TRUE, bug?
+#                     DT::dataTableOutput("results")
+#                     
+#                   )
+#                 )
+#                 
+#               )),
       tabItem("matrix",
               
               fluidRow(column(
@@ -133,8 +172,7 @@ dashboardPage(
       
       tabItem("cumulative",
               
-#               fluidRow(column(
-#                 width = 6,
+
                 box(
                   width = 6,
                   status = "success", #solidHeader = TRUE,
