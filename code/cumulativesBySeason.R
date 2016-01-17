@@ -123,8 +123,8 @@ basePlot +
 output$cumulativeGameOrderPlot <- renderPlotly({
   if(is.null(input$cumteam)) return()
   df_all <- dataCum()$df_all
-  print(glimpse(df_all))
-  write_csv(df_all,"probs.csv")
+#   print(glimpse(df_all))
+#   write_csv(df_all,"probs.csv")
 #  cols <- sort(RColorBrewer::brewer.pal(nlevels(as.factor(df_all$tier)), "BrBG")) #cols ""#D8B365" "#F5F5F5" "#5AB4AC" nlevels(df_all$tier)=0 so add factor
   
   #print(cols)

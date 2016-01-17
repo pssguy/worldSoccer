@@ -51,7 +51,8 @@ function(input, output, session) {
                 #selectInput("heatTeam",NULL,c("Choose Team" = "",teamOptions)),
         selectInput("heatTeam",NULL,teamOptions,selected=values$TEAMNAME),
                 selectInput("heatOpponent",NULL,c("Choose Opponent" = "",c("All Teams",teamOptions))),
-                sliderInput("heatYears","Season Range",min=1888,max=2015,value=c(1992,2015),sep="")
+                sliderInput("heatYears","Season Range",min=1888,max=2015,value=c(1992,2015),sep="")#,
+                #submitButton("New Chart") does not work
       )
     } else {
       print("normal")

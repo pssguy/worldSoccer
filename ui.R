@@ -19,8 +19,8 @@ dashboardPage(
         "Team History",
         menuSubItem("Head To Head", tabName = "matchup"),
         menuSubItem("Result Matrix", tabName = "matrix"),
-        menuSubItem("Season Cumulatives", tabName = "cumulative", selected = T),
-        menuSubItem("Scoreline Heatmap",tabName = "tm_heat"),
+        menuSubItem("Season Cumulatives", tabName = "cumulative"),
+        menuSubItem("Scoreline Heatmap",tabName = "tm_heat", selected = T),
         menuSubItem("Standings", tabName = "standings"),
         menuSubItem("Sequences", tabName = "sequences")
       ),
@@ -284,8 +284,10 @@ tabItem("tm_heat",
 #           selectInput("heatOpponent",NULL,c("Choose Opponent" = "",c("All Teams",teamOptions))),
 #           sliderInput("heatYears","Season Range",min=1888,max=2015,value=c(1992,2015),sep=""),
 #           submitButton("Get chart"),
+          textOutput("heatSummary"),
           plotlyOutput("heatResults"),
-          h4("Click on a cell in the heatmap to display table of results.   If no chart appears, the teams did not meet during time period")
+          h4("Click on a cell in the heatmap to display table of results.   If no chart appears, the teams did not meet during time period"),
+         DT::dataTableOutput("heatResultsOrder")
          
         ),
         box(
