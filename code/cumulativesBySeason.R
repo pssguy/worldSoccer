@@ -1,8 +1,8 @@
 
 dataCum <- reactive({
   
-  if(is.null(input$cumteam)) return()
-  
+  #if(is.null(input$cumteam)) return()
+  req(input$cumteam)
   
   
   df_all <-temp %>% 
@@ -56,7 +56,7 @@ dataCum <- reactive({
 
   
 output$cumulativePlot <- renderPlot({
-  if(is.null(input$cumteam)) return()
+  #if(is.null(input$cumteam)) return()
   
  
 
@@ -121,7 +121,7 @@ basePlot +
 
 
 output$cumulativeGameOrderPlot <- renderPlotly({
-  if(is.null(input$cumteam)) return()
+  #if(is.null(input$cumteam)) return()
   df_all <- dataCum()$df_all
 #   print(glimpse(df_all))
 #   write_csv(df_all,"probs.csv")
