@@ -2,11 +2,11 @@
 
 
 heatData <- reactive({
-  if (is.null(input$heatTeam))
-    return()
-  if (input$heatTeam == "")
-    return()
-  
+  # if (is.null(input$heatTeam))
+  #   return()
+  # if (input$heatTeam == "")
+  #   return()
+  req(input$heatTeam)
   
   startYr <- input$heatYears[1]
   endYr <- input$heatYears[2]
@@ -34,7 +34,7 @@ heatData <- reactive({
   # result summary
   if (input$heatOpponent != "All Teams") {
     W <- total %>%
-      filter(team == input$heatTeam &
+      filter(team == input$heatTeam & 
                Opponents == input$heatOpponent & GF > GA) %>%
       tally() %>%
       .$n  ##55
@@ -79,19 +79,20 @@ heatData <- reactive({
 })
 
 output$heatSummary <- renderText({
-  if (is.null(heatData))
-    return()
+  # if (is.null(heatData))
+  #   return()
   
   heatData()$summary
 })
 
 output$heatResultsOrder <- DT::renderDataTable({
-  if (is.null(heatData))
-    return()
+  # if (is.null(heatData))
+  #   return()
   
   print(glimpse(heatData()$total))
   print("heatResultsOrder info")
   
+  if (input$heatOpponent!="All Teams") {
   heatData()$total %>%
     filter(Opponents==input$heatOpponent) %>% 
     mutate(scoreline=paste0(GF,"-",GA)) %>% 
@@ -104,13 +105,25 @@ output$heatResultsOrder <- DT::renderDataTable({
         paging = TRUE, searching = FALSE,info = FALSE
       )
     )
-  
+  } else {
+    heatData()$total %>%
+      mutate(scoreline=paste0(GF,"-",GA)) %>% 
+      group_by(scoreline) %>%
+      tally() %>%
+      arrange(desc(n)) %>%
+      rename(count = n) %>%
+      DT::datatable(
+        rownames = TRUE,options = list(
+          paging = TRUE, searching = FALSE,info = FALSE
+        )
+      )
+  }
   
 })
 
 output$heatResults <- renderPlotly({
-  if (is.null(heatData))
-    return()
+  # if (is.null(heatData))
+  #   return()
   total <- heatData()$total
   
   ## then do the matrix##
@@ -267,11 +280,12 @@ output$heatResults <- renderPlotly({
 # })
 
 ## crosstalk to get to table of those results
-cv <- crosstalk::ClientValue$new("plotly_click", group = "A")
+#cv <- crosstalk::ClientValue$new("plotly_click", group = "A")
 
 
 output$heatHeader <- renderUI({
-  s <- cv$get()
+  #s <- cv$get()
+  s <- event_data("plotly_click")
   if (length(s) == 0)
     return()
   
@@ -289,7 +303,8 @@ output$heatHeader <- renderUI({
 })
 
 output$heatTable <- DT::renderDataTable({
-  s <- cv$get()
+ # s <- cv$get()
+  s <- event_data("plotly_click")
   print(("printing s"))
   print(length(s))
   if (length(s) == 0) {
