@@ -1,7 +1,9 @@
 # head to head 
 
 headData <- reactive({
-  if(is.null(input$team)) return()
+  #if(is.null(input$team)) return()
+  
+  req(input$team)
   
   home <- df %>% 
     filter(home==input$team) %>% 

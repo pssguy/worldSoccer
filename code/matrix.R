@@ -2,8 +2,12 @@
 
 output$plot_matrix <- renderPlot({
   
-  if(is.null(input$yearMatrix)) return()
-  if(is.null(input$division)) return()
+  # if(is.null(input$yearMatrix)) return()
+  # if(is.null(input$division)) return()
+  
+  req(input$yearMatrix)
+  req(input$division)
+
   df <- df  %>% filter(Season==input$yearMatrix&division==input$division) %>% 
     
     select(home,visitor,FT,hgoal,vgoal) %>% 

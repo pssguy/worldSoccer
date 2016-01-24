@@ -49,8 +49,9 @@ function(input, output, session) {
     } else if (input$sbMenu=="tm_heat") {
       inputPanel(
                 #selectInput("heatTeam",NULL,c("Choose Team" = "",teamOptions)),
-        selectInput("heatTeam",NULL,teamOptions,selected=values$TEAMNAME),
-                selectInput("heatOpponent",NULL,c("Choose Opponent" = "",c("All Teams",teamOptions))),
+        selectInput("heatTeam","Choose Team",teamOptions,selected="Manchester United"),
+               # selectInput("heatOpponent",NULL,c("Choose Opponent" = "",c("All Teams",teamOptions))),
+        selectInput("heatOpponent","Choose Opponent",c("All Teams",teamOptions)),
                 sliderInput("heatYears","Season Range",min=1888,max=2015,value=c(1992,2015),sep="")#,
                 #submitButton("New Chart") does not work
       )
@@ -66,7 +67,10 @@ function(input, output, session) {
       
       if (input$sbMenu=="matrix") {
         
-        if(is.null(input$yearMatrix)) return()
+        #if(is.null(input$yearMatrix)) return()
+        
+        req(input$yearMatrix)
+        
        divChoice <- seasonDiv %>% 
          filter(Season %in% input$yearMatrix)
        
