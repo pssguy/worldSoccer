@@ -7,6 +7,7 @@ heatData <- reactive({
   # if (input$heatTeam == "")
   #   return()
   req(input$heatTeam)
+  req(input$heatYears)
   
   startYr <- input$heatYears[1]
   endYr <- input$heatYears[2]
@@ -86,8 +87,8 @@ output$heatSummary <- renderText({
 })
 
 output$heatResultsOrder <- DT::renderDataTable({
-  # if (is.null(heatData))
-  #   return()
+  if (is.null(heatData))
+    return()
   
   print(glimpse(heatData()$total))
   print("heatResultsOrder info")
@@ -126,15 +127,34 @@ output$heatResults <- renderPlotly({
   #   return()
   total <- heatData()$total
   
-  ## then do the matrix##
+  # write_csv(total,"problem.csv") #1 2016-02-28   2015 Liverpool Everton resch.    NA    NA        1     1      NA      NA     NA 2016-02-28 Liverpool   Everton  Home
+  # 
+  # print("total")
+  # print(total)
+  # 
+  # ## then do the matrix##
+  # 
+  # 
+  # ## check max
+  # 
+  # print(total$GF)
+  # 
+  # temp <- total[is.na(total$GF),]
+  # print(temp)
+  
+  # to cater for actual ocurrence wher futeure games with GF=NA are included
+  total <- total %>% 
+    filter(!is.na(GF))
+  
+  print(maxGF <- max(total$GF))
+  print(maxGA <- max(total$GA))
   
   
-  ## check max
-  
-  maxGF <- max(total$GF)
-  maxGA <- max(total$GA)
   
   theMax <- max(c(maxGF,maxGA))
+  
+  print("themax")
+  print(theMax) #NA
   
   allCombos <- expand.grid(data.frame(GF = 0:theMax,GA = 0:theMax)) %>%
     mutate(combo = paste0(GF,GA)) #169 13x13

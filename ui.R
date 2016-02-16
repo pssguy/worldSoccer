@@ -1,8 +1,10 @@
 
 
 
+
 dashboardPage(
   skin = "yellow",
+  title = "English Leagues",
   
   dashboardHeader(title = "English Leagues"),
   dashboardSidebar(
@@ -21,8 +23,8 @@ dashboardPage(
         menuSubItem("Head To Head", tabName = "matchup"),
         menuSubItem("Result Matrix", tabName = "matrix"),
         menuSubItem("Season Cumulatives", tabName = "cumulative"),
-        menuSubItem("Scoreline Heatmap", tabName = "tm_heat", selected = T),
-        menuSubItem("Standings", tabName = "standings"),
+        menuSubItem("Scoreline Heatmap", tabName = "tm_heat"),
+        menuSubItem("Standings", tabName = "standings", selected = T),
         menuSubItem("Sequences", tabName = "sequences")
       ),
       
@@ -87,8 +89,9 @@ dashboardPage(
                     width = 12,
                     status = "success",
                     solidHeader = TRUE,
-                    title = "League Position by Year - click point for other chart and tables",
-                    ggvisOutput("plot")
+                   
+                    footer = "Zoomable. Hover for Info. Click for League Table",
+                    plotlyOutput("standingsPlot")
                   )
                 ),
                 column(
@@ -98,65 +101,27 @@ dashboardPage(
                     width = 12,
                     status = "success",
                     solidHeader = TRUE,
-                    collapsible = TRUE,
-                    collapsed = F,
-                    title = "League Table",
-                    DT::dataTableOutput('standings')
+                    
+                    h4(textOutput("standingsTableTitle")),
+                    DT::dataTableOutput('standingsTable')
                   )
                 )
               ),
               
-              fluidRow(#                 column(width=5, offset =1,
-                #                        box(
-                #                          width = 12, status = "success",solidHeader = TRUE,
-                #                          collapsible=TRUE, title = "League Position By Round",
-                #                          ggvisOutput("positionByRound")
-                #                        )
-                #                 ),
-                column(
-                  width = 5,
-                  offset = 1,
-                  box(
-                    width = 12,
-                    status = "success",
-                    solidHeader = TRUE,
-                    title = "Season Results",
-                    collapsible = TRUE,
-                    #collapsible=TRUE,collapsed = TRUE, bug?
-                    DT::dataTableOutput("results")
-                    
-                  )
-                ))),
-      #       tabItem("standings",
-      #
-      #               fluidRow(
-      #                 column(
-      #                   width = 6,
-      #                   box(
-      #                     width = 12, status = "success", solidHeader = TRUE,
-      #                     title = "League Position by Year - click point for Table and Results",
-      #                     ggvisOutput("plot")
-      #
-      #                   )
-      #                 ),
-      #                 column(
-      #                   width = 6,
-      #                   box(
-      #                     width = 12, status = "success",solidHeader = TRUE,
-      #                     collapsible = TRUE, title = "League table",
-      #                     DT::dataTableOutput('standings')
-      #                   ),
-      #                   box(
-      #                     width = 12, status = "success", solidHeader = TRUE,
-      #                     title = "Season Results",
-      #                     collapsible = TRUE,
-      #                     #collapsible=TRUE,collapsed = TRUE, bug?
-      #                     DT::dataTableOutput("results")
-      #
-      #                   )
-      #                 )
-      #
-      #               )),
+              fluidRow(column(
+                width = 5,
+                offset = 1,
+                box(
+                  width = 12,
+                  status = "success",
+                  solidHeader = TRUE,
+                  
+                  h4(textOutput("resultsTitle")),
+                  DT::dataTableOutput("results")
+                  
+                )
+              ))),
+      
       tabItem("matrix",
               
               fluidRow(column(
@@ -221,21 +186,20 @@ dashboardPage(
         box(
           width = 6,
           status = "success",
-          #solidHeader = TRUE,
-          #title = "Cumulative",
+          
           footer = "Current Season and Premier League years highlighted",
           plotOutput("cumulativePlot")
         ),
         box(
           width = 6,
           status = "success",
-          #solidHeader = TRUE,
+          
           footer = "Points are jittered to allow hover info. Still in beta",
           
           plotlyOutput("cumulativeGameOrderPlot")
         )
       ),
-      # ))),
+      
       
       tabItem("pfaPlayers",
               fluidRow(
